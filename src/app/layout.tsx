@@ -1,13 +1,22 @@
 import type { Metadata } from "next";
-import { Inter, Figtree } from "next/font/google";
+import { Plus_Jakarta_Sans, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
-import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
 import { cn } from "@/lib/utils";
+import { AuthProvider } from '@/context/AuthContext';
+import ClientLayout from "@/components/ClientLayout";
 
-const figtree = Figtree({subsets:['latin'],variable:'--font-sans'});
+const plusJakarta = Plus_Jakarta_Sans({ 
+  subsets: ['latin'], 
+  variable: '--font-sans',
+  weight: ['400', '500', '600', '700', '800']
+});
 
-const inter = Inter({ subsets: ["latin"] });
+const cormorant = Cormorant_Garamond({ 
+  subsets: ['latin'], 
+  variable: '--font-title',
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic']
+});
 
 export const metadata: Metadata = {
   title: "Stela Finance - Financial Intelligence",
@@ -20,17 +29,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br" className={cn("font-sans", figtree.variable)}>
-      <body className={`${inter.className} bg-[#f8f9fa] text-[#1a1a1a]`}>
-        <div className="flex min-h-screen">
-          <Sidebar />
-          <div className="flex-1 ml-64 flex flex-col min-h-screen">
-            <Header />
-            <main className="flex-1 overflow-y-auto pt-16">
-              {children}
-            </main>
-          </div>
-        </div>
+    <html lang="pt-BR" className={cn("font-sans", plusJakarta.variable, cormorant.variable)} suppressHydrationWarning>
+      <body className={`${plusJakarta.className} bg-[#f8f9fa] text-[#1a1a1a] antialiased`}>
+        <AuthProvider>
+          <ClientLayout>
+            {children}
+          </ClientLayout>
+        </AuthProvider>
       </body>
     </html>
   );
