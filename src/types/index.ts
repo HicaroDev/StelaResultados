@@ -27,5 +27,6 @@ export interface BalanceItem {
   label: string;
   amount: number;
   category: BalanceCategory;
+  year: number;
   updatedAt: string;
 }

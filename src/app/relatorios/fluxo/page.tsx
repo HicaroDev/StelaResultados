@@ -34,12 +34,23 @@ import { Transaction } from '@/types';
 
 export default function FluxoDeCaixaPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [initialBalance, setInitialBalance] = useState(15000);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-    const saved = localStorage.getItem('stela_transactions');
-    if (saved) setTransactions(JSON.parse(saved));
+    const savedTx = localStorage.getItem('stela_transactions');
+    if (savedTx) setTransactions(JSON.parse(savedTx));
+
+    // Buscar Saldo Inicial do Balanço (Disponibilidades)
+    const savedBalance = localStorage.getItem('stela_balance_items');
+    if (savedBalance) {
+      const balanceItems = JSON.parse(savedBalance);
+      const disponibilidades = balanceItems.find((i: any) => i.label.toLowerCase().includes('disponibilidade') || i.label.toLowerCase().includes('caixa'));
+      if (disponibilidades) {
+        setInitialBalance(disponibilidades.amount);
+      }
+    }
   }, []);
 
   if (!isMounted) return null;
@@ -47,7 +58,6 @@ export default function FluxoDeCaixaPage() {
   const incomes = transactions.filter(t => t.type === 'income' && t.status === 'pago').reduce((acc, t) => acc + t.amount, 0);
   const expenses = transactions.filter(t => t.type === 'expense' && t.status === 'pago').reduce((acc, t) => acc + t.amount, 0);
   const netFlow = incomes - expenses;
-  const initialBalance = 15000;
   const finalBalance = initialBalance + netFlow;
 
   const chartData = [

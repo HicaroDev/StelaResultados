@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Shield, Download, TrendingUp, Landmark, Plus, Trash2, Edit3, Save, X } from 'lucide-react';
+import { Shield, Download, TrendingUp, Landmark, Plus, Trash2, Edit3, Save, X, Calendar } from 'lucide-react';
 import { BalanceItem, BalanceCategory } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -11,23 +11,31 @@ export default function BalancoPage() {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState(false);
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   
   const [label, setLabel] = useState('');
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState<BalanceCategory>('Ativo Circulante');
+  const [year, setYear] = useState(new Date().getFullYear());
 
   useEffect(() => {
     setIsMounted(true);
     const saved = localStorage.getItem('stela_balance_items');
     if (saved) {
-      setItems(JSON.parse(saved));
+      const parsed = JSON.parse(saved);
+      // Migração: garantir que itens antigos tenham ano
+      const migrated = parsed.map((item: any) => ({
+        ...item,
+        year: item.year || 2024
+      }));
+      setItems(migrated);
     } else {
       const initial: BalanceItem[] = [
-        { id: '1', label: 'Disponibilidades', amount: 45200.00, category: 'Ativo Circulante', updatedAt: new Date().toISOString() },
-        { id: '2', label: 'Contas a Receber', amount: 105030.00, category: 'Ativo Circulante', updatedAt: new Date().toISOString() },
-        { id: '3', label: 'Sede Própria', amount: 850000.00, category: 'Ativo Não Circulante', updatedAt: new Date().toISOString() },
-        { id: '4', label: 'Fornecedores', amount: 35400.00, category: 'Passivo Circulante', updatedAt: new Date().toISOString() },
-        { id: '5', label: 'Empréstimos', amount: 350000.00, category: 'Passivo Não Circulante', updatedAt: new Date().toISOString() },
+        { id: '1', label: 'Disponibilidades', amount: 45200.00, category: 'Ativo Circulante', year: 2024, updatedAt: new Date().toISOString() },
+        { id: '2', label: 'Contas a Receber', amount: 105030.00, category: 'Ativo Circulante', year: 2024, updatedAt: new Date().toISOString() },
+        { id: '3', label: 'Sede Própria', amount: 850000.00, category: 'Ativo Não Circulante', year: 2024, updatedAt: new Date().toISOString() },
+        { id: '4', label: 'Fornecedores', amount: 35400.00, category: 'Passivo Circulante', year: 2024, updatedAt: new Date().toISOString() },
+        { id: '5', label: 'Empréstimos', amount: 350000.00, category: 'Passivo Não Circulante', year: 2024, updatedAt: new Date().toISOString() },
       ];
       setItems(initial);
       localStorage.setItem('stela_balance_items', JSON.stringify(initial));
@@ -40,6 +48,7 @@ export default function BalancoPage() {
     setLabel('');
     setAmount('');
     setCategory('Ativo Circulante');
+    setYear(selectedYear);
     setEditingId(null);
     setShowForm(false);
   };
@@ -47,11 +56,17 @@ export default function BalancoPage() {
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     
+    const itemData = {
+      label,
+      amount: parseFloat(amount),
+      category,
+      year: Number(year),
+      updatedAt: new Date().toISOString()
+    };
+
     if (editingId) {
       const updated = items.map(item => {
-        if (item.id === editingId) {
-          return { ...item, label, amount: parseFloat(amount), category, updatedAt: new Date().toISOString() };
-        }
+        if (item.id === editingId) return { ...item, ...itemData };
         return item;
       });
       setItems(updated);
@@ -59,10 +74,7 @@ export default function BalancoPage() {
     } else {
       const newItem: BalanceItem = {
         id: Math.random().toString(36).substr(2, 9),
-        label,
-        amount: parseFloat(amount),
-        category,
-        updatedAt: new Date().toISOString()
+        ...itemData
       };
       const updated = [...items, newItem];
       setItems(updated);
@@ -76,6 +88,7 @@ export default function BalancoPage() {
     setLabel(item.label);
     setAmount(item.amount.toString());
     setCategory(item.category);
+    setYear(item.year);
     setShowForm(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -88,8 +101,14 @@ export default function BalancoPage() {
     }
   };
 
+  const years = Array.from(new Set(items.map(i => i.year))).sort((a, b) => b - a);
+  if (!years.includes(new Date().getFullYear())) years.push(new Date().getFullYear());
+  years.sort((a, b) => b - a);
+
+  const filteredItems = items.filter(i => i.year === selectedYear);
+
   const getCategoryTotal = (cat: BalanceCategory) => {
-    return items.filter(i => i.category === cat).reduce((acc, i) => acc + i.amount, 0);
+    return filteredItems.filter(i => i.category === cat).reduce((acc, i) => acc + i.amount, 0);
   };
 
   const totalAtivo = getCategoryTotal('Ativo Circulante') + getCategoryTotal('Ativo Não Circulante');
@@ -98,21 +117,42 @@ export default function BalancoPage() {
 
   return (
     <div className="p-6 md:p-8 max-w-[1500px] mx-auto w-full space-y-8 animate-in fade-in duration-700">
-      <div className="flex justify-between items-end">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <div>
           <h2 className="text-4xl font-medium tracking-tight text-foreground font-title italic leading-none">Balanço Patrimonial</h2>
-          <p className="text-muted-foreground font-black mt-2 uppercase text-[9px] tracking-widest">Módulo 3 • Posição Financeira</p>
+          <p className="text-muted-foreground font-black mt-2 uppercase text-[9px] tracking-widest">Módulo 3 • Histórico de Posição</p>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" className="h-10 px-4 rounded-xl font-black text-[9px] uppercase tracking-widest bg-white border-primary/10" onClick={() => alert('Exportando Balanço Patrimonial...')}>
-            <Download size={14} className="mr-2" /> PDF
+        <div className="flex gap-2 w-full md:w-auto">
+          <Button variant="outline" className="flex-1 md:flex-none h-10 px-4 rounded-xl font-black text-[9px] uppercase tracking-widest bg-white border-primary/10" onClick={() => alert('Exportando Balanço ' + selectedYear)}>
+            <Download size={14} className="mr-2" /> PDF {selectedYear}
           </Button>
-          {!showForm && (
-            <Button onClick={() => setShowForm(true)} className="bg-primary text-primary-foreground h-10 px-4 rounded-xl font-black text-[9px] uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 transition-all">
-              <Plus size={14} className="mr-2" /> Novo Item
-            </Button>
-          )}
+          <Button onClick={() => { setYear(selectedYear); setShowForm(true); }} className="flex-1 md:flex-none bg-primary text-primary-foreground h-10 px-4 rounded-xl font-black text-[9px] uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 transition-all">
+            <Plus size={14} className="mr-2" /> Novo Item
+          </Button>
         </div>
+      </div>
+
+      {/* TABS DE ANOS */}
+      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+        {years.map(y => (
+          <button
+            key={y}
+            onClick={() => setSelectedYear(y)}
+            className={`px-6 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${
+              selectedYear === y 
+                ? 'bg-foreground text-background shadow-lg scale-105' 
+                : 'bg-white text-muted-foreground border border-primary/5 hover:bg-primary/5'
+            }`}
+          >
+            Exercício {y}
+          </button>
+        ))}
+        <button 
+          onClick={() => { const ny = Math.max(...years) + 1; setSelectedYear(ny); }}
+          className="px-4 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest bg-muted/30 text-muted-foreground border border-dashed border-muted hover:bg-white transition-all"
+        >
+          + Ano
+        </button>
       </div>
 
       {showForm && (
@@ -123,8 +163,8 @@ export default function BalancoPage() {
              </h3>
              <button onClick={resetForm} className="p-1 hover:bg-muted rounded-lg transition-all"><X size={18} className="text-muted-foreground" /></button>
           </div>
-          <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-            <div className="space-y-1.5">
+          <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+            <div className="space-y-1.5 md:col-span-2">
               <label className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">Descrição</label>
               <input required value={label} onChange={(e) => setLabel(e.target.value)} className="w-full bg-muted/30 border-transparent rounded-xl px-4 py-2.5 text-xs font-bold focus:bg-white focus:ring-2 focus:ring-primary/10 transition-all" placeholder="Ex: Banco Itaú" />
             </div>
@@ -141,10 +181,15 @@ export default function BalancoPage() {
                 <option value="Passivo Não Circulante">Passivo Não Circulante</option>
               </select>
             </div>
-            <div className="flex gap-2">
+            <div className="space-y-1.5">
+              <label className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">Ano do Exercício</label>
+              <input required type="number" value={year} onChange={(e) => setYear(Number(e.target.value))} className="w-full bg-muted/30 border-transparent rounded-xl px-4 py-2.5 text-xs font-bold focus:bg-white focus:ring-2 focus:ring-primary/10 transition-all" />
+            </div>
+            <div className="flex gap-2 md:col-span-5 mt-2">
                <Button type="submit" className="flex-1 bg-foreground text-background h-10 rounded-xl font-black text-[9px] uppercase tracking-widest hover:scale-105 transition-all">
-                 {editingId ? 'Salvar Alteração' : 'Adicionar'}
+                 {editingId ? 'Salvar Alteração' : 'Adicionar ao Balanço'}
                </Button>
+               <Button type="button" onClick={resetForm} variant="outline" className="px-6 h-10 rounded-xl font-black text-[9px] uppercase tracking-widest">Cancelar</Button>
             </div>
           </form>
         </Card>
@@ -157,16 +202,19 @@ export default function BalancoPage() {
             <div className="px-8 py-5 border-b border-primary/5 bg-primary/5 flex justify-between items-center">
               <div className="flex items-center gap-2">
                 <TrendingUp size={18} className="text-primary-foreground" />
-                <h3 className="text-sm font-black text-foreground uppercase tracking-tight">Ativos (Tenho)</h3>
+                <h3 className="text-sm font-black text-foreground uppercase tracking-tight">Ativos {selectedYear}</h3>
               </div>
               <span className="text-sm font-black text-primary-foreground">{totalAtivo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
             </div>
             <div className="p-8 space-y-6">
               {['Ativo Circulante', 'Ativo Não Circulante'].map((cat) => (
                 <div key={cat}>
-                  <h4 className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-3">{cat}</h4>
+                  <div className="flex justify-between items-center mb-3">
+                    <h4 className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.2em]">{cat}</h4>
+                    <span className="text-[10px] font-black text-muted-foreground/40">{( (getCategoryTotal(cat as BalanceCategory) / (totalAtivo || 1)) * 100).toFixed(0)}%</span>
+                  </div>
                   <div className="space-y-1">
-                    {items.filter(i => i.category === cat).map(item => (
+                    {filteredItems.filter(i => i.category === cat).map(item => (
                       <div key={item.id} className="flex justify-between items-center py-2 group">
                         <span className="text-xs font-bold text-muted-foreground/80">{item.label}</span>
                         <div className="flex items-center gap-3">
@@ -178,6 +226,9 @@ export default function BalancoPage() {
                         </div>
                       </div>
                     ))}
+                    {filteredItems.filter(i => i.category === cat).length === 0 && (
+                      <p className="text-[10px] italic text-muted-foreground/40 py-2">Nenhum registro para este exercício.</p>
+                    )}
                     <div className="flex justify-between py-3 border-t border-dashed border-muted/30 mt-1">
                       <span className="text-[9px] font-black text-muted-foreground uppercase">Subtotal {cat.split(' ')[1]}</span>
                       <span className="text-[9px] font-black text-foreground">{getCategoryTotal(cat as BalanceCategory).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
@@ -195,7 +246,7 @@ export default function BalancoPage() {
             <div className="px-8 py-5 border-b border-muted/10 bg-muted/20 flex justify-between items-center">
               <div className="flex items-center gap-2">
                 <Shield size={18} className="text-muted-foreground" />
-                <h3 className="text-sm font-black text-foreground uppercase tracking-tight">Passivos (Devo)</h3>
+                <h3 className="text-sm font-black text-foreground uppercase tracking-tight">Passivos {selectedYear}</h3>
               </div>
               <span className="text-sm font-black text-foreground">{totalPassivo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
             </div>
@@ -204,7 +255,7 @@ export default function BalancoPage() {
                 <div key={cat}>
                   <h4 className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-3">{cat}</h4>
                   <div className="space-y-1">
-                    {items.filter(i => i.category === cat).map(item => (
+                    {filteredItems.filter(i => i.category === cat).map(item => (
                       <div key={item.id} className="flex justify-between items-center py-2 group">
                         <span className="text-xs font-bold text-muted-foreground/80">{item.label}</span>
                         <div className="flex items-center gap-3">
@@ -216,6 +267,9 @@ export default function BalancoPage() {
                         </div>
                       </div>
                     ))}
+                    {filteredItems.filter(i => i.category === cat).length === 0 && (
+                      <p className="text-[10px] italic text-muted-foreground/40 py-2">Nenhum registro para este exercício.</p>
+                    )}
                     <div className="flex justify-between py-3 border-t border-dashed border-muted/30 mt-1">
                       <span className="text-[9px] font-black text-muted-foreground uppercase">Subtotal {cat.split(' ')[1]}</span>
                       <span className="text-[9px] font-black text-foreground">{getCategoryTotal(cat as BalanceCategory).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
@@ -229,11 +283,11 @@ export default function BalancoPage() {
           <Card className="bg-foreground rounded-[35px] p-8 text-background shadow-2xl relative overflow-hidden">
             <div className="relative z-10 flex justify-between items-center">
               <div>
-                <p className="text-[9px] font-black opacity-40 uppercase tracking-widest mb-1">Patrimônio Líquido</p>
+                <p className="text-[9px] font-black opacity-40 uppercase tracking-widest mb-1">Patrimônio Líquido {selectedYear}</p>
                 <h4 className="text-3xl font-black tracking-tighter">{patrimonioLiquido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h4>
               </div>
               <div className="text-right">
-                <p className="text-[9px] font-black opacity-40 uppercase tracking-widest mb-1">Liquidez</p>
+                <p className="text-[9px] font-black opacity-40 uppercase tracking-widest mb-1">Liquidez {selectedYear}</p>
                 <div className="flex items-baseline gap-1">
                   <span className="text-2xl font-black">{(totalAtivo / (totalPassivo || 1)).toFixed(1)}</span>
                   <span className="text-[10px] opacity-40">x</span>
