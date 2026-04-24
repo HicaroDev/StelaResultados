@@ -3,57 +3,89 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, Download, TrendingUp, Landmark, Plus, Trash2, Edit3, Save, X } from 'lucide-react';
 import { BalanceItem, BalanceCategory } from '@/types';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 
 export default function BalancoPage() {
   const [items, setItems] = useState<BalanceItem[]>([]);
   const [showForm, setShowForm] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
   
-  // Form State
   const [label, setLabel] = useState('');
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState<BalanceCategory>('Ativo Circulante');
 
   useEffect(() => {
+    setIsMounted(true);
     const saved = localStorage.getItem('stela_balance_items');
     if (saved) {
       setItems(JSON.parse(saved));
     } else {
-      // Dados iniciais sugeridos
       const initial: BalanceItem[] = [
-        { id: '1', label: 'Caixa / Bancos', amount: 45200.00, category: 'Ativo Circulante', updatedAt: new Date().toISOString() },
+        { id: '1', label: 'Disponibilidades', amount: 45200.00, category: 'Ativo Circulante', updatedAt: new Date().toISOString() },
         { id: '2', label: 'Contas a Receber', amount: 105030.00, category: 'Ativo Circulante', updatedAt: new Date().toISOString() },
-        { id: '3', label: 'Imóveis / Sede', amount: 850000.00, category: 'Ativo Não Circulante', updatedAt: new Date().toISOString() },
-        { id: '4', label: 'Fornecedores a Pagar', amount: 35400.00, category: 'Passivo Circulante', updatedAt: new Date().toISOString() },
-        { id: '5', label: 'Empréstimos Bancários', amount: 350000.00, category: 'Passivo Não Circulante', updatedAt: new Date().toISOString() },
+        { id: '3', label: 'Sede Própria', amount: 850000.00, category: 'Ativo Não Circulante', updatedAt: new Date().toISOString() },
+        { id: '4', label: 'Fornecedores', amount: 35400.00, category: 'Passivo Circulante', updatedAt: new Date().toISOString() },
+        { id: '5', label: 'Empréstimos', amount: 350000.00, category: 'Passivo Não Circulante', updatedAt: new Date().toISOString() },
       ];
       setItems(initial);
       localStorage.setItem('stela_balance_items', JSON.stringify(initial));
     }
   }, []);
 
-  const handleSave = (e: React.FormEvent) => {
-    e.preventDefault();
-    const newItem: BalanceItem = {
-      id: Math.random().toString(36).substr(2, 9),
-      label,
-      amount: parseFloat(amount),
-      category,
-      updatedAt: new Date().toISOString()
-    };
+  if (!isMounted) return null;
 
-    const updated = [...items, newItem];
-    setItems(updated);
-    localStorage.setItem('stela_balance_items', JSON.stringify(updated));
-    
+  const resetForm = () => {
     setLabel('');
     setAmount('');
+    setCategory('Ativo Circulante');
+    setEditingId(null);
     setShowForm(false);
   };
 
+  const handleSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (editingId) {
+      const updated = items.map(item => {
+        if (item.id === editingId) {
+          return { ...item, label, amount: parseFloat(amount), category, updatedAt: new Date().toISOString() };
+        }
+        return item;
+      });
+      setItems(updated);
+      localStorage.setItem('stela_balance_items', JSON.stringify(updated));
+    } else {
+      const newItem: BalanceItem = {
+        id: Math.random().toString(36).substr(2, 9),
+        label,
+        amount: parseFloat(amount),
+        category,
+        updatedAt: new Date().toISOString()
+      };
+      const updated = [...items, newItem];
+      setItems(updated);
+      localStorage.setItem('stela_balance_items', JSON.stringify(updated));
+    }
+    resetForm();
+  };
+
+  const handleEdit = (item: BalanceItem) => {
+    setEditingId(item.id);
+    setLabel(item.label);
+    setAmount(item.amount.toString());
+    setCategory(item.category);
+    setShowForm(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleDelete = (id: string) => {
-    const updated = items.filter(item => item.id !== id);
-    setItems(updated);
-    localStorage.setItem('stela_balance_items', JSON.stringify(updated));
+    if (window.confirm('Deseja excluir este item?')) {
+      const updated = items.filter(item => item.id !== id);
+      setItems(updated);
+      localStorage.setItem('stela_balance_items', JSON.stringify(updated));
+    }
   };
 
   const getCategoryTotal = (cat: BalanceCategory) => {
@@ -65,227 +97,151 @@ export default function BalancoPage() {
   const patrimonioLiquido = totalAtivo - totalPassivo;
 
   return (
-    <div className="p-10 max-w-[1400px] mx-auto w-full space-y-10 font-['Plus_Jakarta_Sans']">
+    <div className="p-6 md:p-8 max-w-[1500px] mx-auto w-full space-y-8 animate-in fade-in duration-700">
       <div className="flex justify-between items-end">
         <div>
-          <h2 className="text-4xl font-black tracking-tighter text-[#1A1A1A]">Balanço Patrimonial</h2>
-          <p className="text-gray-400 font-bold mt-2 uppercase text-[10px] tracking-[0.2em]">Módulo 3 • Gestão de Ativos e Passivos</p>
+          <h2 className="text-4xl font-medium tracking-tight text-foreground font-title italic leading-none">Balanço Patrimonial</h2>
+          <p className="text-muted-foreground font-black mt-2 uppercase text-[9px] tracking-widest">Módulo 3 • Posição Financeira</p>
         </div>
-        <div className="flex gap-4">
-          <button className="flex items-center gap-2 px-6 py-3 bg-white border border-gray-100 rounded-2xl text-sm font-black text-gray-500 shadow-sm hover:shadow-md transition-all">
-            <Download size={18} />
-            Exportar
-          </button>
-          <button 
-            onClick={() => setShowForm(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-[#1A1A1A] text-white rounded-2xl text-sm font-black shadow-2xl shadow-gray-200 hover:-translate-y-1 transition-all"
-          >
-            <Plus size={18} />
-            Novo Item
-          </button>
+        <div className="flex gap-2">
+          <Button variant="outline" className="h-10 px-4 rounded-xl font-black text-[9px] uppercase tracking-widest bg-white border-primary/10" onClick={() => alert('Exportando Balanço Patrimonial...')}>
+            <Download size={14} className="mr-2" /> PDF
+          </Button>
+          {!showForm && (
+            <Button onClick={() => setShowForm(true)} className="bg-primary text-primary-foreground h-10 px-4 rounded-xl font-black text-[9px] uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 transition-all">
+              <Plus size={14} className="mr-2" /> Novo Item
+            </Button>
+          )}
         </div>
       </div>
 
       {showForm && (
-        <div className="bg-white p-10 rounded-[40px] border border-gray-100 shadow-2xl animate-in fade-in slide-in-from-top-4 duration-500">
-          <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-4 gap-8 items-end">
-            <div className="space-y-3">
-              <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Descrição do Item</label>
-              <input 
-                required
-                value={label}
-                onChange={(e) => setLabel(e.target.value)}
-                className="w-full bg-gray-50 border-transparent rounded-2xl px-5 py-4 text-sm font-bold focus:bg-white focus:ring-2 focus:ring-gray-100 transition-all" 
-                placeholder="Ex: Banco Itaú"
-              />
+        <Card className="bg-white p-6 rounded-[30px] border-none shadow-xl animate-in fade-in slide-in-from-top-4 duration-500">
+          <div className="flex justify-between items-center mb-4">
+             <h3 className="text-sm font-black text-foreground uppercase tracking-tight">
+               {editingId ? 'Editar Item' : 'Novo Item do Balanço'}
+             </h3>
+             <button onClick={resetForm} className="p-1 hover:bg-muted rounded-lg transition-all"><X size={18} className="text-muted-foreground" /></button>
+          </div>
+          <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+            <div className="space-y-1.5">
+              <label className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">Descrição</label>
+              <input required value={label} onChange={(e) => setLabel(e.target.value)} className="w-full bg-muted/30 border-transparent rounded-xl px-4 py-2.5 text-xs font-bold focus:bg-white focus:ring-2 focus:ring-primary/10 transition-all" placeholder="Ex: Banco Itaú" />
             </div>
-            <div className="space-y-3">
-              <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Saldo Atual (R$)</label>
-              <input 
-                required
-                type="number"
-                step="0.01"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                className="w-full bg-gray-50 border-transparent rounded-2xl px-5 py-4 text-sm font-bold focus:bg-white focus:ring-2 focus:ring-gray-100 transition-all" 
-                placeholder="0,00"
-              />
+            <div className="space-y-1.5">
+              <label className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">Valor (R$)</label>
+              <input required type="number" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-full bg-muted/30 border-transparent rounded-xl px-4 py-2.5 text-xs font-bold focus:bg-white focus:ring-2 focus:ring-primary/10 transition-all" placeholder="0,00" />
             </div>
-            <div className="space-y-3">
-              <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Categoria</label>
-              <select 
-                value={category}
-                onChange={(e) => setCategory(e.target.value as BalanceCategory)}
-                className="w-full bg-gray-50 border-transparent rounded-2xl px-5 py-4 text-sm font-bold focus:bg-white focus:ring-2 focus:ring-gray-100 transition-all"
-              >
+            <div className="space-y-1.5">
+              <label className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">Categoria</label>
+              <select value={category} onChange={(e) => setCategory(e.target.value as BalanceCategory)} className="w-full bg-muted/30 border-transparent rounded-xl px-4 py-2.5 text-xs font-bold focus:bg-white focus:ring-2 focus:ring-primary/10 transition-all appearance-none">
                 <option value="Ativo Circulante">Ativo Circulante</option>
                 <option value="Ativo Não Circulante">Ativo Não Circulante</option>
                 <option value="Passivo Circulante">Passivo Circulante</option>
                 <option value="Passivo Não Circulante">Passivo Não Circulante</option>
               </select>
             </div>
-            <div className="flex gap-3">
-               <button type="submit" className="flex-1 bg-[#1A1A1A] text-white py-4 rounded-2xl font-black text-sm hover:shadow-xl transition-all">
-                  Adicionar
-               </button>
-               <button 
-                type="button"
-                onClick={() => setShowForm(false)}
-                className="px-6 py-4 bg-gray-50 text-gray-400 rounded-2xl font-black text-sm hover:bg-gray-100 transition-all"
-               >
-                 <X size={20} />
-               </button>
+            <div className="flex gap-2">
+               <Button type="submit" className="flex-1 bg-foreground text-background h-10 rounded-xl font-black text-[9px] uppercase tracking-widest hover:scale-105 transition-all">
+                 {editingId ? 'Salvar Alteração' : 'Adicionar'}
+               </Button>
             </div>
           </form>
-        </div>
+        </Card>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        {/* LADO ESQUERDO: ATIVOS */}
-        <div className="space-y-8">
-          <div className="bg-white rounded-[40px] border border-gray-100 shadow-sm overflow-hidden">
-            <div className="p-8 border-b border-gray-50 bg-green-50/30 flex justify-between items-center">
-              <div className="flex items-center gap-3">
-                <TrendingUp className="text-green-600" size={24} />
-                <h3 className="text-xl font-black text-[#1A1A1A]">Ativos (O que eu tenho)</h3>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* ATIVOS */}
+        <div className="space-y-6">
+          <Card className="bg-white rounded-[35px] border-none shadow-[0px_10px_30px_rgba(0,0,0,0.02)] overflow-hidden">
+            <div className="px-8 py-5 border-b border-primary/5 bg-primary/5 flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <TrendingUp size={18} className="text-primary-foreground" />
+                <h3 className="text-sm font-black text-foreground uppercase tracking-tight">Ativos (Tenho)</h3>
               </div>
-              <span className="text-lg font-black text-green-600">{totalAtivo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+              <span className="text-sm font-black text-primary-foreground">{totalAtivo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
             </div>
-            
-            <div className="p-8 space-y-8">
-              {/* Ativo Circulante */}
-              <div>
-                <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Ativo Circulante</h4>
-                <div className="space-y-2">
-                  {items.filter(i => i.category === 'Ativo Circulante').map(item => (
-                    <div key={item.id} className="flex justify-between items-center py-3 group">
-                      <span className="text-sm font-bold text-gray-600">{item.label}</span>
-                      <div className="flex items-center gap-4">
-                        <span className="text-sm font-black text-[#1A1A1A]">{item.amount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
-                        <button onClick={() => handleDelete(item.id)} className="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><Trash2 size={14}/></button>
+            <div className="p-8 space-y-6">
+              {['Ativo Circulante', 'Ativo Não Circulante'].map((cat) => (
+                <div key={cat}>
+                  <h4 className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-3">{cat}</h4>
+                  <div className="space-y-1">
+                    {items.filter(i => i.category === cat).map(item => (
+                      <div key={item.id} className="flex justify-between items-center py-2 group">
+                        <span className="text-xs font-bold text-muted-foreground/80">{item.label}</span>
+                        <div className="flex items-center gap-3">
+                          <span className="text-xs font-black text-foreground">{item.amount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                          <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                             <button onClick={() => handleEdit(item)} className="text-muted-foreground/20 hover:text-primary-foreground p-1.5 rounded-lg transition-all"><Edit3 size={12}/></button>
+                             <button onClick={() => handleDelete(item.id)} className="text-muted-foreground/20 hover:text-red-400 p-1.5 rounded-lg transition-all"><Trash2 size={12}/></button>
+                          </div>
+                        </div>
                       </div>
+                    ))}
+                    <div className="flex justify-between py-3 border-t border-dashed border-muted/30 mt-1">
+                      <span className="text-[9px] font-black text-muted-foreground uppercase">Subtotal {cat.split(' ')[1]}</span>
+                      <span className="text-[9px] font-black text-foreground">{getCategoryTotal(cat as BalanceCategory).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                     </div>
-                  ))}
-                  <div className="flex justify-between py-4 border-t border-dashed border-gray-100 mt-2">
-                    <span className="text-xs font-black text-gray-400 uppercase">Subtotal Circulante</span>
-                    <span className="text-xs font-black text-[#1A1A1A]">{getCategoryTotal('Ativo Circulante').toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                   </div>
                 </div>
-              </div>
-
-              {/* Ativo Não Circulante */}
-              <div>
-                <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Ativo Não Circulante</h4>
-                <div className="space-y-2">
-                  {items.filter(i => i.category === 'Ativo Não Circulante').map(item => (
-                    <div key={item.id} className="flex justify-between items-center py-3 group">
-                      <span className="text-sm font-bold text-gray-600">{item.label}</span>
-                      <div className="flex items-center gap-4">
-                        <span className="text-sm font-black text-[#1A1A1A]">{item.amount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
-                        <button onClick={() => handleDelete(item.id)} className="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><Trash2 size={14}/></button>
-                      </div>
-                    </div>
-                  ))}
-                  <div className="flex justify-between py-4 border-t border-dashed border-gray-100 mt-2">
-                    <span className="text-xs font-black text-gray-400 uppercase">Subtotal Não Circulante</span>
-                    <span className="text-xs font-black text-[#1A1A1A]">{getCategoryTotal('Ativo Não Circulante').toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
-          </div>
+          </Card>
         </div>
 
-        {/* LADO DIREITO: PASSIVOS E PL */}
-        <div className="space-y-8">
-          <div className="bg-white rounded-[40px] border border-gray-100 shadow-sm overflow-hidden">
-            <div className="p-8 border-b border-gray-50 bg-red-50/30 flex justify-between items-center">
-              <div className="flex items-center gap-3">
-                <Shield className="text-red-600" size={24} />
-                <h3 className="text-xl font-black text-[#1A1A1A]">Passivos (O que eu devo)</h3>
+        {/* PASSIVOS */}
+        <div className="space-y-6">
+          <Card className="bg-white rounded-[35px] border-none shadow-[0px_10px_30px_rgba(0,0,0,0.02)] overflow-hidden">
+            <div className="px-8 py-5 border-b border-muted/10 bg-muted/20 flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <Shield size={18} className="text-muted-foreground" />
+                <h3 className="text-sm font-black text-foreground uppercase tracking-tight">Passivos (Devo)</h3>
               </div>
-              <span className="text-lg font-black text-red-600">{totalPassivo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+              <span className="text-sm font-black text-foreground">{totalPassivo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
             </div>
-            
-            <div className="p-8 space-y-8">
-              {/* Passivo Circulante */}
-              <div>
-                <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Passivo Circulante</h4>
-                <div className="space-y-2">
-                  {items.filter(i => i.category === 'Passivo Circulante').map(item => (
-                    <div key={item.id} className="flex justify-between items-center py-3 group">
-                      <span className="text-sm font-bold text-gray-600">{item.label}</span>
-                      <div className="flex items-center gap-4">
-                        <span className="text-sm font-black text-[#1A1A1A]">{item.amount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
-                        <button onClick={() => handleDelete(item.id)} className="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><Trash2 size={14}/></button>
+            <div className="p-8 space-y-6">
+              {['Passivo Circulante', 'Passivo Não Circulante'].map((cat) => (
+                <div key={cat}>
+                  <h4 className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-3">{cat}</h4>
+                  <div className="space-y-1">
+                    {items.filter(i => i.category === cat).map(item => (
+                      <div key={item.id} className="flex justify-between items-center py-2 group">
+                        <span className="text-xs font-bold text-muted-foreground/80">{item.label}</span>
+                        <div className="flex items-center gap-3">
+                          <span className="text-xs font-black text-foreground">{item.amount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                          <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                             <button onClick={() => handleEdit(item)} className="text-muted-foreground/20 hover:text-primary-foreground p-1.5 rounded-lg transition-all"><Edit3 size={12}/></button>
+                             <button onClick={() => handleDelete(item.id)} className="text-muted-foreground/20 hover:text-red-400 p-1.5 rounded-lg transition-all"><Trash2 size={12}/></button>
+                          </div>
+                        </div>
                       </div>
+                    ))}
+                    <div className="flex justify-between py-3 border-t border-dashed border-muted/30 mt-1">
+                      <span className="text-[9px] font-black text-muted-foreground uppercase">Subtotal {cat.split(' ')[1]}</span>
+                      <span className="text-[9px] font-black text-foreground">{getCategoryTotal(cat as BalanceCategory).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                     </div>
-                  ))}
-                  <div className="flex justify-between py-4 border-t border-dashed border-gray-100 mt-2">
-                    <span className="text-xs font-black text-gray-400 uppercase">Subtotal Circulante</span>
-                    <span className="text-xs font-black text-[#1A1A1A]">{getCategoryTotal('Passivo Circulante').toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                   </div>
                 </div>
-              </div>
-
-              {/* Passivo Não Circulante */}
-              <div>
-                <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Passivo Não Circulante</h4>
-                <div className="space-y-2">
-                  {items.filter(i => i.category === 'Passivo Não Circulante').map(item => (
-                    <div key={item.id} className="flex justify-between items-center py-3 group">
-                      <span className="text-sm font-bold text-gray-600">{item.label}</span>
-                      <div className="flex items-center gap-4">
-                        <span className="text-sm font-black text-[#1A1A1A]">{item.amount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
-                        <button onClick={() => handleDelete(item.id)} className="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><Trash2 size={14}/></button>
-                      </div>
-                    </div>
-                  ))}
-                  <div className="flex justify-between py-4 border-t border-dashed border-gray-100 mt-2">
-                    <span className="text-xs font-black text-gray-400 uppercase">Subtotal Não Circulante</span>
-                    <span className="text-xs font-black text-[#1A1A1A]">{getCategoryTotal('Passivo Não Circulante').toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
-          </div>
+          </Card>
 
-          {/* PATRIMÔNIO LÍQUIDO */}
-          <div className="bg-[#1A1A1A] rounded-[40px] p-8 text-white shadow-2xl relative overflow-hidden">
+          <Card className="bg-foreground rounded-[35px] p-8 text-background shadow-2xl relative overflow-hidden">
             <div className="relative z-10 flex justify-between items-center">
               <div>
-                <p className="text-[10px] font-black opacity-50 uppercase tracking-widest mb-2">Patrimônio Líquido (PL)</p>
-                <h4 className="text-4xl font-black">{patrimonioLiquido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h4>
+                <p className="text-[9px] font-black opacity-40 uppercase tracking-widest mb-1">Patrimônio Líquido</p>
+                <h4 className="text-3xl font-black tracking-tighter">{patrimonioLiquido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</h4>
               </div>
               <div className="text-right">
-                <p className="text-[10px] font-black opacity-50 uppercase tracking-widest mb-2">Health Score</p>
+                <p className="text-[9px] font-black opacity-40 uppercase tracking-widest mb-1">Liquidez</p>
                 <div className="flex items-baseline gap-1">
-                  <span className="text-3xl font-black">{(patrimonioLiquido > 0 ? 100 : 0)}</span>
-                  <span className="text-sm opacity-50">/100</span>
+                  <span className="text-2xl font-black">{(totalAtivo / (totalPassivo || 1)).toFixed(1)}</span>
+                  <span className="text-[10px] opacity-40">x</span>
                 </div>
               </div>
             </div>
-            <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full blur-3xl"></div>
-          </div>
-        </div>
-      </div>
-
-      {/* KPI Footer */}
-      <div className="bg-gray-50 rounded-[40px] p-10 border border-gray-100 flex flex-col md:flex-row justify-between items-center gap-8">
-        <div className="flex items-center gap-6">
-          <div className="w-16 h-16 rounded-3xl bg-[#1A1A1A] flex items-center justify-center text-white shadow-xl shadow-gray-200">
-            <Landmark size={32} />
-          </div>
-          <div>
-            <h4 className="text-2xl font-black text-[#1A1A1A]">Liquidez Corrente: {(totalAtivo / (getCategoryTotal('Passivo Circulante') || 1)).toFixed(2)}</h4>
-            <p className="text-gray-400 text-sm font-medium mt-1">Capacidade de pagamento a curto prazo baseada no seu ativo circulante.</p>
-          </div>
-        </div>
-        <div className="flex gap-4">
-           <div className="text-right">
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Solvência Total</p>
-              <p className="text-xl font-black text-[#1A1A1A]">{(totalAtivo / (totalPassivo || 1)).toFixed(2)}</p>
-           </div>
+            <div className="absolute -right-5 -bottom-5 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
+          </Card>
         </div>
       </div>
     </div>

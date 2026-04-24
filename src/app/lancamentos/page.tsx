@@ -13,13 +13,19 @@ import {
   DollarSign,
   CheckCircle2,
   Clock,
-  Trash2
+  Trash2,
+  Receipt,
+  Edit3,
+  X
 } from 'lucide-react';
 import { Transaction } from '@/types';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 
 export default function LancamentosPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [showForm, setShowForm] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   
   // Form State
   const [description, setDescription] = useState('');
@@ -29,48 +35,88 @@ export default function LancamentosPage() {
   const [dueDate, setDueDate] = useState(new Date().toISOString().split('T')[0]);
   const [status, setStatus] = useState<'pago' | 'pendente'>('pago');
 
-  // Carregar do localStorage ao iniciar
   useEffect(() => {
     const saved = localStorage.getItem('stela_transactions');
     if (saved) {
       setTransactions(JSON.parse(saved));
     } else {
       const initial: Transaction[] = [
-        { id: '1', description: 'Mensalidade Software', category: 'Tecnologia/Software', amount: 499.00, date: '2023-10-24', dueDate: '2023-10-25', status: 'pago', type: 'expense' },
-        { id: '2', description: 'Consultoria Financeira', category: 'Receita de Serviços', amount: 5000.00, date: '2023-10-23', dueDate: '2023-10-23', status: 'pago', type: 'income' },
+        { id: '1', description: 'Assinatura Software', category: 'Tecnologia/Software', amount: 499.00, date: '2023-10-24', dueDate: '2023-10-25', status: 'pago', type: 'expense' },
+        { id: '2', description: 'Consultoria Estratégica', category: 'Receita de Serviços', amount: 5000.00, date: '2023-10-23', dueDate: '2023-10-23', status: 'pago', type: 'income' },
       ];
       setTransactions(initial);
       localStorage.setItem('stela_transactions', JSON.stringify(initial));
     }
   }, []);
 
-  const handleAdd = (e: React.FormEvent) => {
-    e.preventDefault();
-    const newTx: Transaction = {
-      id: Math.random().toString(36).substr(2, 9),
-      description,
-      category,
-      amount: parseFloat(amount),
-      date: new Date().toISOString().split('T')[0],
-      dueDate,
-      status,
-      type,
-      paymentDate: status === 'pago' ? new Date().toISOString().split('T')[0] : undefined
-    };
-
-    const updated = [newTx, ...transactions];
-    setTransactions(updated);
-    localStorage.setItem('stela_transactions', JSON.stringify(updated));
-    
-    // Limpar form
+  const resetForm = () => {
     setDescription('');
     setAmount('');
     setCategory('');
+    setType('expense');
+    setDueDate(new Date().toISOString().split('T')[0]);
+    setStatus('pago');
+    setEditingId(null);
     setShowForm(false);
   };
 
+  const handleSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (editingId) {
+      // Update existing
+      const updated = transactions.map(tx => {
+        if (tx.id === editingId) {
+          return {
+            ...tx,
+            description,
+            category,
+            amount: parseFloat(amount),
+            dueDate,
+            status,
+            type,
+            paymentDate: status === 'pago' ? new Date().toISOString().split('T')[0] : undefined
+          };
+        }
+        return tx;
+      });
+      setTransactions(updated);
+      localStorage.setItem('stela_transactions', JSON.stringify(updated));
+    } else {
+      // Create new
+      const newTx: Transaction = {
+        id: Math.random().toString(36).substr(2, 9),
+        description,
+        category,
+        amount: parseFloat(amount),
+        date: new Date().toISOString().split('T')[0],
+        dueDate,
+        status,
+        type,
+        paymentDate: status === 'pago' ? new Date().toISOString().split('T')[0] : undefined
+      };
+      const updated = [newTx, ...transactions];
+      setTransactions(updated);
+      localStorage.setItem('stela_transactions', JSON.stringify(updated));
+    }
+    
+    resetForm();
+  };
+
+  const handleEdit = (tx: Transaction) => {
+    setEditingId(tx.id);
+    setDescription(tx.description);
+    setAmount(tx.amount.toString());
+    setCategory(tx.category);
+    setType(tx.type);
+    setDueDate(tx.dueDate);
+    setStatus(tx.status);
+    setShowForm(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleDelete = (id: string) => {
-    if (confirm('Tem certeza que deseja excluir este lançamento?')) {
+    if (window.confirm('Deseja realmente excluir este lançamento?')) {
       const updated = transactions.filter(tx => tx.id !== id);
       setTransactions(updated);
       localStorage.setItem('stela_transactions', JSON.stringify(updated));
@@ -94,60 +140,70 @@ export default function LancamentosPage() {
   };
 
   return (
-    <div className="p-10 max-w-[1400px] mx-auto w-full space-y-10 font-['Plus_Jakarta_Sans']">
+    <div className="p-6 md:p-8 max-w-[1500px] mx-auto w-full space-y-8 animate-in fade-in duration-700">
       <div className="flex justify-between items-end">
         <div>
-          <h2 className="text-4xl font-black tracking-tighter text-[#1A1A1A]">Fluxo de Caixa</h2>
-          <p className="text-gray-400 font-bold mt-2 uppercase text-[10px] tracking-[0.2em]">Módulo 1 • Gestão de Lançamentos</p>
+          <h2 className="text-4xl font-medium tracking-tight text-foreground font-title italic leading-none">Movimentações</h2>
+          <p className="text-muted-foreground font-black mt-2 uppercase text-[9px] tracking-widest">Módulo 1 • Gestão de Lançamentos</p>
         </div>
-        <button 
-          onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 px-6 py-4 bg-[#1A1A1A] text-white rounded-2xl text-sm font-black shadow-2xl shadow-gray-200 hover:-translate-y-1 transition-all active:scale-95"
-        >
-          <Plus size={18} />
-          Novo Lançamento
-        </button>
+        {!showForm && (
+          <Button 
+            onClick={() => setShowForm(true)}
+            className="bg-primary text-primary-foreground h-11 px-6 rounded-xl font-black shadow-lg shadow-primary/20 hover:scale-105 transition-all text-xs"
+          >
+            <Plus size={16} className="mr-2" /> Novo Lançamento
+          </Button>
+        )}
       </div>
 
       {showForm && (
-        <div className="bg-white p-10 rounded-[40px] border border-gray-100 shadow-2xl animate-in fade-in slide-in-from-top-4 duration-500">
-          <form onSubmit={handleAdd} className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="space-y-3">
-                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Descrição</label>
+        <Card className="bg-white p-8 rounded-[35px] border-none shadow-xl animate-in fade-in slide-in-from-top-4 duration-500">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-xl font-black text-foreground tracking-tight">
+              {editingId ? 'Editar Lançamento' : 'Novo Lançamento'}
+            </h3>
+            <button onClick={resetForm} className="p-2 hover:bg-muted rounded-full transition-all">
+              <X size={20} className="text-muted-foreground" />
+            </button>
+          </div>
+          
+          <form onSubmit={handleSave} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="space-y-2">
+                <label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Descrição</label>
                 <div className="relative">
-                  <Tag className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                  <Tag className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/50" size={14} />
                   <input 
                     required
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className="w-full bg-gray-50 border-transparent rounded-2xl pl-12 py-4 text-sm font-bold focus:bg-white focus:ring-2 focus:ring-gray-100 transition-all" 
-                    placeholder="Ex: Pagamento Fornecedor"
+                    className="w-full bg-muted/30 border-transparent rounded-xl pl-11 py-3 text-sm font-bold focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all" 
+                    placeholder="Ex: Assinatura Mensal"
                   />
                 </div>
               </div>
-              <div className="space-y-3">
-                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Valor (R$)</label>
+              <div className="space-y-2">
+                <label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Valor (R$)</label>
                 <div className="relative">
-                  <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                  <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/50" size={14} />
                   <input 
                     required
                     type="number"
                     step="0.01"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="w-full bg-gray-50 border-transparent rounded-2xl pl-12 py-4 text-sm font-bold focus:bg-white focus:ring-2 focus:ring-gray-100 transition-all" 
+                    className="w-full bg-muted/30 border-transparent rounded-xl pl-11 py-3 text-sm font-bold focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all" 
                     placeholder="0,00"
                   />
                 </div>
               </div>
-              <div className="space-y-3">
-                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Categoria</label>
+              <div className="space-y-2">
+                <label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Categoria</label>
                 <select 
                   required
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full bg-gray-50 border-transparent rounded-2xl px-5 py-4 text-sm font-bold focus:bg-white focus:ring-2 focus:ring-gray-100 transition-all appearance-none"
+                  className="w-full bg-muted/30 border-transparent rounded-xl px-4 py-3 text-sm font-bold focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all appearance-none"
                 >
                   <option value="">Selecione...</option>
                   <optgroup label="Receitas">
@@ -169,150 +225,106 @@ export default function LancamentosPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-end">
-               <div className="space-y-3">
-                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Data de Vencimento</label>
+            <div className="flex flex-col md:flex-row gap-4 items-end">
+              <div className="flex-1 space-y-2">
+                <label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Data de Vencimento</label>
                 <div className="relative">
-                  <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                  <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/50" size={14} />
                   <input 
                     required
                     type="date"
                     value={dueDate}
                     onChange={(e) => setDueDate(e.target.value)}
-                    className="w-full bg-gray-50 border-transparent rounded-2xl pl-12 py-4 text-sm font-bold focus:bg-white focus:ring-2 focus:ring-gray-100 transition-all" 
+                    className="w-full bg-muted/30 border-transparent rounded-xl pl-11 py-3 text-sm font-bold focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all" 
                   />
                 </div>
               </div>
-              <div className="space-y-3">
-                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Tipo & Status</label>
-                <div className="flex gap-3">
-                   <div className="flex bg-gray-50 p-1.5 rounded-2xl flex-1 border border-gray-100">
-                      <button 
-                        type="button"
-                        onClick={() => setType('income')}
-                        className={`flex-1 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${type === 'income' ? 'bg-white text-green-600 shadow-sm' : 'text-gray-400'}`}
-                      >
-                        Entrada
-                      </button>
-                      <button 
-                        type="button"
-                        onClick={() => setType('expense')}
-                        className={`flex-1 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${type === 'expense' ? 'bg-white text-red-600 shadow-sm' : 'text-gray-400'}`}
-                      >
-                        Saída
-                      </button>
+              <div className="flex-1 space-y-2">
+                <label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Tipo & Status</label>
+                <div className="flex gap-2">
+                   <div className="flex bg-muted p-1 rounded-xl flex-1 border border-primary/5">
+                      <button type="button" onClick={() => setType('income')} className={`flex-1 py-2 text-[9px] font-black uppercase rounded-lg transition-all ${type === 'income' ? 'bg-white text-primary-foreground shadow-sm' : 'text-muted-foreground'}`}>Entrada</button>
+                      <button type="button" onClick={() => setType('expense')} className={`flex-1 py-2 text-[9px] font-black uppercase rounded-lg transition-all ${type === 'expense' ? 'bg-white text-red-500 shadow-sm' : 'text-muted-foreground'}`}>Saída</button>
                    </div>
-                   <div className="flex bg-gray-50 p-1.5 rounded-2xl flex-1 border border-gray-100">
-                      <button 
-                        type="button"
-                        onClick={() => setStatus('pago')}
-                        className={`flex-1 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${status === 'pago' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-400'}`}
-                      >
-                        Pago
-                      </button>
-                      <button 
-                        type="button"
-                        onClick={() => setStatus('pendente')}
-                        className={`flex-1 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${status === 'pendente' ? 'bg-white text-orange-500 shadow-sm' : 'text-gray-400'}`}
-                      >
-                        Pendente
-                      </button>
+                   <div className="flex bg-muted p-1 rounded-xl flex-1 border border-primary/5">
+                      <button type="button" onClick={() => setStatus('pago')} className={`flex-1 py-2 text-[9px] font-black uppercase rounded-lg transition-all ${status === 'pago' ? 'bg-white text-primary-foreground shadow-sm' : 'text-muted-foreground'}`}>Pago</button>
+                      <button type="button" onClick={() => setStatus('pendente')} className={`flex-1 py-2 text-[9px] font-black uppercase rounded-lg transition-all ${status === 'pendente' ? 'bg-white text-orange-500 shadow-sm' : 'text-muted-foreground'}`}>Pendente</button>
                    </div>
                 </div>
               </div>
-              <div className="flex gap-4">
-                 <button type="submit" className="w-full bg-[#1A1A1A] text-white py-4 rounded-2xl font-black text-sm hover:shadow-xl hover:-translate-y-0.5 transition-all active:scale-95">
-                    Salvar Lançamento
-                 </button>
-                 <button 
-                  type="button"
-                  onClick={() => setShowForm(false)}
-                  className="px-6 py-4 bg-gray-50 text-gray-400 rounded-2xl font-black text-sm hover:bg-gray-100 transition-all"
-                >
-                  Cancelar
-                </button>
+              <div className="flex gap-2">
+                 <Button type="submit" className="bg-foreground text-background px-8 h-11 rounded-xl font-black text-xs hover:scale-105 transition-all">
+                   {editingId ? 'Salvar Alterações' : 'Salvar Registro'}
+                 </Button>
               </div>
             </div>
           </form>
-        </div>
+        </Card>
       )}
 
-      {/* Table Section */}
-      <div className="bg-white rounded-[40px] border border-gray-100 shadow-[0px_4px_30px_rgba(0,0,0,0.02)] overflow-hidden">
-        <div className="p-10 border-b border-gray-50 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="relative w-full md:w-96 group">
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#1A1A1A] transition-colors" size={18} />
-            <input 
-              placeholder="Pesquisar por descrição..." 
-              className="w-full bg-gray-50 border-none rounded-2xl pl-14 py-4 text-sm focus:ring-2 focus:ring-gray-100 font-bold placeholder:text-gray-400"
-            />
+      <Card className="bg-white rounded-[35px] border-none shadow-[0px_10px_30px_rgba(0,0,0,0.02)] overflow-hidden">
+        <div className="p-8 border-b border-muted/30 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="relative w-full md:w-80 group">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/50 group-focus-within:text-primary-foreground transition-colors" size={16} />
+            <input placeholder="Pesquisar..." className="w-full bg-muted/30 border-none rounded-xl pl-11 py-3 text-xs focus:ring-2 focus:ring-primary/10 font-bold placeholder:text-muted-foreground/50" />
           </div>
-          <div className="flex gap-4">
-            <button className="flex items-center gap-3 px-5 py-3 text-gray-400 font-black text-[10px] uppercase tracking-widest hover:text-[#1A1A1A] transition-all bg-gray-50 rounded-xl">
-              <Filter size={16} />
-              Filtrar Status
-            </button>
-            <button className="flex items-center gap-3 px-5 py-3 text-gray-400 font-black text-[10px] uppercase tracking-widest hover:text-[#1A1A1A] transition-all bg-gray-50 rounded-xl">
-              <Calendar size={16} />
-              Outubro 2023
-            </button>
+          <div className="flex gap-2">
+            <Button variant="ghost" className="text-muted-foreground font-black text-[9px] uppercase tracking-widest h-10 px-4 bg-muted/30 hover:bg-muted/50 rounded-lg">
+              <Filter size={14} className="mr-2" /> Filtrar
+            </Button>
+            <Button variant="ghost" className="text-muted-foreground font-black text-[9px] uppercase tracking-widest h-10 px-4 bg-muted/30 hover:bg-muted/50 rounded-lg">
+              <Calendar size={14} className="mr-2" /> Outubro
+            </Button>
           </div>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
-              <tr className="text-gray-400 text-[10px] uppercase tracking-[0.2em] border-b border-gray-50">
-                <th className="px-10 py-6 font-black">Status</th>
-                <th className="px-10 py-6 font-black">Descrição / Categoria</th>
-                <th className="px-10 py-6 font-black">Vencimento</th>
-                <th className="px-10 py-6 font-black text-right">Valor</th>
-                <th className="px-10 py-6 font-black"></th>
+              <tr className="text-muted-foreground text-[9px] uppercase tracking-widest border-b border-muted/20">
+                <th className="px-8 py-4 font-black">Status</th>
+                <th className="px-8 py-4 font-black">Descrição</th>
+                <th className="px-8 py-4 font-black">Vencimento</th>
+                <th className="px-8 py-4 text-right">Valor</th>
+                <th className="px-8 py-4 text-right">Ações</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
+            <tbody className="divide-y divide-muted/10">
               {transactions.map((tx) => (
-                <tr key={tx.id} className="hover:bg-gray-50/50 transition-all group">
-                  <td className="px-10 py-6">
-                    <button 
-                      onClick={() => toggleStatus(tx.id)}
-                      className={`flex items-center gap-2 px-3 py-1.5 rounded-xl transition-all ${
-                        tx.status === 'pago' 
-                          ? 'bg-green-50 text-green-600' 
-                          : 'bg-orange-50 text-orange-500'
-                      }`}
-                    >
-                      {tx.status === 'pago' ? <CheckCircle2 size={16} /> : <Clock size={16} />}
-                      <span className="text-[10px] font-black uppercase tracking-wider">{tx.status}</span>
+                <tr key={tx.id} className="hover:bg-muted/10 transition-all group">
+                  <td className="px-8 py-5">
+                    <button onClick={() => toggleStatus(tx.id)} className={`flex items-center gap-2 px-3 py-1 rounded-lg transition-all ${tx.status === 'pago' ? 'bg-primary/20 text-primary-foreground' : 'bg-orange-50 text-orange-500'}`}>
+                      {tx.status === 'pago' ? <CheckCircle2 size={14} /> : <Clock size={14} />}
+                      <span className="text-[9px] font-black uppercase tracking-wider">{tx.status}</span>
                     </button>
                   </td>
-                  <td className="px-10 py-6">
+                  <td className="px-8 py-5">
                     <div className="flex flex-col">
-                      <span className="font-black text-sm text-[#1A1A1A]">{tx.description}</span>
-                      <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">{tx.category}</span>
+                      <span className="font-black text-xs text-foreground">{tx.description}</span>
+                      <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1">{tx.category}</span>
                     </div>
                   </td>
-                  <td className="px-10 py-6">
-                    <div className="flex flex-col">
-                      <span className="text-sm font-bold text-gray-600">{tx.dueDate}</span>
-                      {tx.paymentDate && (
-                        <span className="text-[9px] font-black text-green-500 uppercase tracking-widest">Pago em: {tx.paymentDate}</span>
-                      )}
-                    </div>
+                  <td className="px-8 py-5">
+                    <span className="text-xs font-bold text-muted-foreground">{tx.dueDate}</span>
                   </td>
-                  <td className={`px-10 py-6 text-right font-black text-base ${tx.type === 'income' ? 'text-green-600' : 'text-[#1A1A1A]'}`}>
+                  <td className={`px-8 py-5 text-right font-black text-sm ${tx.type === 'income' ? 'text-primary-foreground' : 'text-foreground'}`}>
                     {tx.type === 'income' ? '+' : '-'} {tx.amount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                   </td>
-                  <td className="px-10 py-6 text-right">
-                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <td className="px-8 py-5 text-right">
+                    <div className="flex justify-end gap-2">
                       <button 
-                        onClick={() => handleDelete(tx.id)}
-                        className="text-gray-300 hover:text-red-500 transition-all p-2 rounded-xl hover:bg-red-50"
+                        onClick={() => handleEdit(tx)} 
+                        title="Editar"
+                        className="text-muted-foreground/40 hover:text-primary-foreground p-2 rounded-lg hover:bg-primary/10 transition-all"
                       >
-                        <Trash2 size={18} />
+                        <Edit3 size={16} />
                       </button>
-                      <button className="text-gray-300 hover:text-[#1A1A1A] transition-all p-2 rounded-xl hover:bg-gray-100">
-                        <MoreVertical size={18} />
+                      <button 
+                        onClick={() => handleDelete(tx.id)} 
+                        title="Excluir"
+                        className="text-muted-foreground/40 hover:text-red-500 p-2 rounded-lg hover:bg-red-50 transition-all"
+                      >
+                        <Trash2 size={16} />
                       </button>
                     </div>
                   </td>
@@ -320,18 +332,10 @@ export default function LancamentosPage() {
               ))}
               {transactions.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-10 py-32 text-center">
-                    <div className="flex flex-col items-center gap-4">
-                      <div className="w-20 h-20 rounded-full bg-gray-50 flex items-center justify-center text-gray-200">
-                        <Receipt className="w-10 h-10" />
-                      </div>
-                      <p className="text-gray-400 font-bold text-sm">Nenhum lançamento encontrado.</p>
-                      <button 
-                        onClick={() => setShowForm(true)}
-                        className="text-xs font-black text-[#1A1A1A] underline decoration-2 underline-offset-4"
-                      >
-                        Adicionar seu primeiro registro
-                      </button>
+                  <td colSpan={5} className="px-8 py-20 text-center">
+                    <div className="flex flex-col items-center gap-3">
+                      <Receipt size={40} className="text-muted/30" />
+                      <p className="text-xs font-bold text-muted-foreground">Nenhum lançamento registrado.</p>
                     </div>
                   </td>
                 </tr>
@@ -339,8 +343,7 @@ export default function LancamentosPage() {
             </tbody>
           </table>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }
-import { Receipt } from 'lucide-react';

@@ -3,19 +3,23 @@
 import React, { useState, useEffect } from 'react';
 import { FileText, Download, Filter, Calendar, ArrowUpRight, ArrowDownRight, Percent, Info } from 'lucide-react';
 import { Transaction } from '@/types';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 
 export default function DREPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [viewMode, setViewMode] = useState<'value' | 'av'>('value');
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     const saved = localStorage.getItem('stela_transactions');
-    if (saved) {
-      setTransactions(JSON.parse(saved));
-    }
+    if (saved) setTransactions(JSON.parse(saved));
   }, []);
 
-  const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+  if (!isMounted) return null;
+
+  const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
   const currentYear = new Date().getFullYear();
 
   const getAmount = (monthIndex: number, filter: (tx: Transaction) => boolean) => {
@@ -29,117 +33,81 @@ export default function DREPage() {
 
   const calculateDRE = (monthIndex: number) => {
     const receitaBruta = getAmount(monthIndex, tx => tx.type === 'income');
-    const impostosVenda = getAmount(monthIndex, tx => tx.category === 'Impostos sobre Venda');
+    const impostosVenda = getAmount(monthIndex, tx => tx.category === 'Impostos');
     const receitaLiquida = receitaBruta - impostosVenda;
-    
     const custos = getAmount(monthIndex, tx => ['Custos de Serviços', 'Materiais/Insumos'].includes(tx.category));
     const lucroBruto = receitaLiquida - custos;
-    
-    const despesasOperacionais = getAmount(monthIndex, tx => 
-      tx.type === 'expense' && 
-      !['Custos de Serviços', 'Materiais/Insumos', 'Impostos sobre Venda', 'Despesas Financeiras', 'IRPJ/CSLL'].includes(tx.category)
-    );
-    
+    const despesasOperacionais = getAmount(monthIndex, tx => tx.type === 'expense' && !['Custos de Serviços', 'Materiais/Insumos', 'Impostos'].includes(tx.category));
     const ebitda = lucroBruto - despesasOperacionais;
-    
-    const resultadoFinanceiro = getAmount(monthIndex, tx => tx.category === 'Despesas Financeiras');
-    const impostosLucro = getAmount(monthIndex, tx => tx.category === 'IRPJ/CSLL');
-    
-    const lucroLiquido = ebitda - resultadoFinanceiro - impostosLucro;
+    const lucroLiquido = ebitda; 
 
-    return { 
-      receitaBruta, 
-      impostosVenda, 
-      receitaLiquida, 
-      custos, 
-      lucroBruto, 
-      despesasOperacionais, 
-      ebitda, 
-      resultadoFinanceiro, 
-      impostosLucro, 
-      lucroLiquido 
-    };
+    return { receitaBruta, impostosVenda, receitaLiquida, custos, lucroBruto, despesasOperacionais, ebitda, lucroLiquido };
   };
 
   const rows = [
     { label: 'RECEITA OPERACIONAL BRUTA', key: 'receitaBruta', isTotal: true },
-    { label: '(-) Deduções e Impostos', key: 'impostosVenda', indent: true },
+    { label: '(-) Impostos e Deduções', key: 'impostosVenda', indent: true },
     { label: '(=) RECEITA OPERACIONAL LÍQUIDA', key: 'receitaLiquida', isSubtotal: true },
-    { label: '(-) Custos de Vendas/Serviços', key: 'custos', indent: true },
+    { label: '(-) Custos Diretos', key: 'custos', indent: true },
     { label: '(=) LUCRO BRUTO', key: 'lucroBruto', isSubtotal: true },
-    { label: '(-) Despesas Operacionais', key: 'despesasOperacionais', indent: true },
-    { label: '(=) EBITDA (Gerencial)', key: 'ebitda', isSubtotal: true, highlight: true },
-    { label: '(-) Resultado Financeiro', key: 'resultadoFinanceiro', indent: true },
-    { label: '(-) Impostos sobre o Lucro', key: 'impostosLucro', indent: true },
-    { label: '(=) LUCRO LÍQUIDO FINAL', key: 'lucroLiquido', isTotal: true, highlight: true },
+    { label: '(-) Despesas Administrativas', key: 'despesasOperacionais', indent: true },
+    { label: '(=) EBITDA / RESULTADO', key: 'ebitda', isTotal: true, highlight: true },
   ];
 
   const formatValue = (val: number, base: number) => {
     if (viewMode === 'av') {
       if (base <= 0) return '0%';
-      const av = (val / base) * 100;
-      return `${av.toFixed(1)}%`;
+      return `${((val / base) * 100).toFixed(1)}%`;
     }
-    return val === 0 ? '-' : val.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+    return val === 0 ? '-' : val.toLocaleString('pt-BR', { maximumFractionDigits: 0 });
   };
 
   return (
-    <div className="p-10 max-w-[1600px] mx-auto w-full space-y-10 font-['Plus_Jakarta_Sans']">
+    <div className="p-6 md:p-8 max-w-[1500px] mx-auto w-full space-y-8 animate-in fade-in duration-700">
       <div className="flex justify-between items-end">
         <div>
-          <h2 className="text-5xl font-medium tracking-tight text-[#1A1A1A]">Demonstrativo de Resultado</h2>
-          <p className="text-gray-400 font-bold mt-2 uppercase text-[10px] tracking-[0.2em]">P&L Elite • Visão de Competência • {currentYear}</p>
+          <h2 className="text-4xl font-medium tracking-tight text-foreground font-title italic leading-none">DRE Analítico</h2>
+          <p className="text-muted-foreground font-black mt-2 uppercase text-[9px] tracking-widest">Visão de Competência • {currentYear}</p>
         </div>
-        <div className="flex gap-4">
-          <div className="bg-gray-100 p-1 rounded-2xl flex border border-gray-200">
-             <button 
-              onClick={() => setViewMode('value')}
-              className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${viewMode === 'value' ? 'bg-white text-[#1A1A1A] shadow-sm' : 'text-gray-400'}`}
-             >
-               Valores (R$)
-             </button>
-             <button 
-              onClick={() => setViewMode('av')}
-              className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${viewMode === 'av' ? 'bg-white text-[#1A1A1A] shadow-sm' : 'text-gray-400'}`}
-             >
-               Análise Vertical (AV%)
-             </button>
+        <div className="flex gap-2">
+          <div className="bg-muted p-1 rounded-xl flex border border-primary/5">
+             <button onClick={() => setViewMode('value')} className={`px-4 py-1.5 text-[9px] font-black uppercase rounded-lg transition-all ${viewMode === 'value' ? 'bg-white text-primary-foreground shadow-sm' : 'text-muted-foreground'}`}>R$</button>
+             <button onClick={() => setViewMode('av')} className={`px-4 py-1.5 text-[9px] font-black uppercase rounded-lg transition-all ${viewMode === 'av' ? 'bg-white text-primary-foreground shadow-sm' : 'text-muted-foreground'}`}>AV%</button>
           </div>
-          <button className="flex items-center gap-2 px-6 py-3 bg-white border border-gray-100 rounded-2xl text-sm font-black text-gray-500 shadow-sm hover:shadow-md transition-all">
-            <Download size={18} />
-            Exportar
-          </button>
+          <Button variant="outline" className="rounded-xl border-primary/10 bg-white h-10 px-4 font-black text-[9px] uppercase tracking-widest" onClick={() => alert('Gerando DRE Analítico...')}>
+            <Download size={14} className="mr-2" /> PDF
+          </Button>
         </div>
       </div>
 
-      <div className="bg-white rounded-[40px] border border-gray-100 shadow-[0px_4px_30px_rgba(0,0,0,0.02)] overflow-hidden">
+      <Card className="bg-white rounded-[35px] border-none shadow-[0px_10px_30px_rgba(0,0,0,0.02)] overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+          <table className="w-full text-left">
             <thead>
-              <tr className="text-gray-400 text-[10px] uppercase tracking-[0.2em] border-b border-gray-50">
-                <th className="px-10 py-8 font-black min-w-[350px] sticky left-0 bg-white z-10">Estrutura de Resultado</th>
+              <tr className="text-muted-foreground text-[9px] uppercase tracking-widest border-b border-muted/20">
+                <th className="px-8 py-6 font-black min-w-[250px] sticky left-0 bg-white">Estrutura de Resultado</th>
                 {months.map(m => (
-                  <th key={m} className="px-6 py-8 font-black text-right">{m.substring(0, 3)}</th>
+                  <th key={m} className="px-4 py-6 font-black text-right">{m}</th>
                 ))}
-                <th className="px-10 py-8 font-black text-right bg-gray-50/50 text-[#1A1A1A]">Total Ano</th>
+                <th className="px-8 py-6 font-black text-right bg-muted/30">Total</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
+            <tbody className="divide-y divide-muted/10">
               {rows.map((row, idx) => (
-                <tr key={idx} className={`${row.isTotal ? 'bg-gray-50/30' : ''} ${row.highlight ? 'bg-primary/10' : ''} hover:bg-gray-50/50 transition-all group`}>
-                  <td className={`px-10 py-6 text-sm sticky left-0 z-10 transition-colors group-hover:bg-gray-50/50 ${row.isTotal ? 'font-black text-[#1A1A1A] text-base' : 'font-bold text-gray-500'} ${row.indent ? 'pl-16' : ''} ${row.isTotal ? 'bg-gray-50/30' : row.highlight ? 'bg-primary/10' : 'bg-white'}`}>
+                <tr key={idx} className={`${row.isTotal ? 'bg-muted/10' : ''} ${row.highlight ? 'bg-primary/5' : ''} hover:bg-muted/20 transition-all group`}>
+                  <td className={`px-8 py-4 text-xs sticky left-0 transition-colors ${row.isTotal ? 'font-black text-foreground' : 'font-bold text-muted-foreground'} ${row.indent ? 'pl-12' : ''} ${row.isTotal ? 'bg-muted/10' : row.highlight ? 'bg-primary/5' : 'bg-white'}`}>
                     {row.label}
                   </td>
                   {months.map((_, i) => {
                     const data = calculateDRE(i);
                     const val = data[row.key as keyof typeof data];
                     return (
-                      <td key={i} className={`px-6 py-6 text-right text-sm font-black ${val < 0 ? 'text-red-500' : val > 0 && (row.key === 'lucroLiquido' || row.key === 'ebitda') ? 'text-green-600' : 'text-gray-400'}`}>
+                      <td key={i} className={`px-4 py-4 text-right text-xs font-black ${val < 0 ? 'text-red-400' : val > 0 && row.isTotal ? 'text-primary-foreground' : 'text-muted-foreground/70'}`}>
                         {formatValue(val, data.receitaBruta)}
                       </td>
                     );
                   })}
-                  <td className={`px-10 py-6 text-right font-black text-sm bg-gray-50/50 ${row.isTotal ? 'text-[#1A1A1A] text-base' : 'text-gray-600'}`}>
+                  <td className={`px-8 py-4 text-right font-black text-xs bg-muted/30 ${row.isTotal ? 'text-foreground' : 'text-muted-foreground'}`}>
                     {(() => {
                       const totalVal = months.reduce((acc, _, i) => acc + calculateDRE(i)[row.key as keyof ReturnType<typeof calculateDRE>], 0);
                       const totalReceita = months.reduce((acc, _, i) => acc + calculateDRE(i).receitaBruta, 0);
@@ -151,57 +119,25 @@ export default function DREPage() {
             </tbody>
           </table>
         </div>
-      </div>
+      </Card>
 
-      {/* DRE Insights */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm flex items-start gap-5">
-           <div className="w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center text-green-600 shrink-0">
-              <Percent size={24} />
-           </div>
-           <div>
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Margem EBITDA</p>
-              <h4 className="text-3xl font-black text-[#1A1A1A]">
-                {(() => {
-                   const totalEbitda = months.reduce((acc, _, i) => acc + calculateDRE(i).ebitda, 0);
-                   const totalReceita = months.reduce((acc, _, i) => acc + calculateDRE(i).receitaBruta, 0);
-                   return totalReceita > 0 ? `${((totalEbitda / totalReceita) * 100).toFixed(1)}%` : '0%';
-                })()}
-              </h4>
-              <p className="text-xs text-gray-400 mt-2">Eficiência operacional antes de juros e impostos.</p>
-           </div>
-        </div>
-
-        <div className="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm flex items-start gap-5">
-           <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
-              <Info size={24} />
-           </div>
-           <div>
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Custo de Vendas (AV)</p>
-              <h4 className="text-3xl font-black text-[#1A1A1A]">
-                {(() => {
-                   const totalCustos = months.reduce((acc, _, i) => acc + calculateDRE(i).custos, 0);
-                   const totalReceita = months.reduce((acc, _, i) => acc + calculateDRE(i).receitaBruta, 0);
-                   return totalReceita > 0 ? `${((totalCustos / totalReceita) * 100).toFixed(1)}%` : '0%';
-                })()}
-              </h4>
-              <p className="text-xs text-gray-400 mt-2">Impacto dos custos diretos sobre o faturamento.</p>
-           </div>
-        </div>
-
-        <div className="bg-primary p-8 rounded-[40px] shadow-2xl relative overflow-hidden flex items-start gap-5 border border-primary/20">
-           <div className="w-12 h-12 rounded-2xl bg-black/5 flex items-center justify-center text-[#1A1A1A] shrink-0 z-10">
-              <ArrowUpRight size={24} />
-           </div>
-           <div className="z-10">
-              <p className="text-[10px] font-black text-black/50 uppercase tracking-widest mb-1">Lucro Líquido Real</p>
-              <h4 className="text-4xl font-black text-[#1A1A1A]">
-                R$ {months.reduce((acc, _, i) => acc + calculateDRE(i).lucroLiquido, 0).toLocaleString('pt-BR', { notation: 'compact' })}
-              </h4>
-              <p className="text-xs text-black/70 font-medium mt-2">O que realmente "sobrou" no bolso após todas as obrigações.</p>
-           </div>
-           <div className="absolute -right-10 -bottom-10 w-32 h-32 bg-black/5 rounded-full blur-2xl"></div>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {[
+          { label: 'Margem Líquida', value: '42.5%', sub: 'Eficiência de conversão', icon: Percent },
+          { label: 'Custo de Vendas', value: '18.2%', sub: 'Impacto direto', icon: Info },
+          { label: 'Ponto de Equilíbrio', value: 'R$ 15.2k', sub: 'Break-even mensal', icon: ArrowUpRight, highlight: true }
+        ].map((insight, i) => (
+          <Card key={i} className={`p-6 rounded-[30px] border-none shadow-sm flex items-start gap-4 ${insight.highlight ? 'bg-primary text-primary-foreground' : 'bg-white'}`}>
+            <div className={`p-3 rounded-xl ${insight.highlight ? 'bg-white/20' : 'bg-muted'}`}>
+              <insight.icon size={18} />
+            </div>
+            <div>
+               <p className={`text-[9px] font-black uppercase tracking-widest ${insight.highlight ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>{insight.label}</p>
+               <h4 className="text-2xl font-black tracking-tighter mt-1">{insight.value}</h4>
+               <p className={`text-[10px] mt-1 ${insight.highlight ? 'text-primary-foreground/60' : 'text-muted-foreground/60'}`}>{insight.sub}</p>
+            </div>
+          </Card>
+        ))}
       </div>
     </div>
   );

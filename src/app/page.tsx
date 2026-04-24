@@ -1,178 +1,176 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
-  TrendingUp,
-  ArrowDown,
-  ArrowUp,
-  Plus,
-  FileDown,
-  Send,
-  CreditCard,
-  RefreshCcw,
-  Shield,
-  ArrowUpRight,
-  ArrowDownRight,
-  Target,
-  Zap,
-  Activity,
-  BarChart3
-} from 'lucide-react';
-import FinancialChart from '@/components/FinancialChart';
-import TransactionsTable from '@/components/TransactionsTable';
 import Link from 'next/link';
-import { Transaction, BalanceItem } from '@/types';
+import { 
+  TrendingUp, 
+  TrendingDown, 
+  DollarSign, 
+  ArrowUpRight, 
+  ArrowDownRight,
+  Plus,
+  FileText,
+  Zap,
+  Shield,
+  Activity,
+  Target
+} from 'lucide-react';
+import { 
+  Area,
+  AreaChart,
+  CartesianGrid, 
+  XAxis, 
+  YAxis,
+  ResponsiveContainer,
+  Tooltip
+} from "recharts"
+
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { Button } from '@/components/ui/button';
 
+const chartData = [
+  { name: 'Jan', value: 130 },
+  { name: 'Fev', value: 110 },
+  { name: 'Mar', value: 90 },
+  { name: 'Abr', value: 140 },
+  { name: 'Mai', value: 135 },
+  { name: 'Jun', value: 180 },
+];
+
 export default function Dashboard() {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [balanceItems, setBalanceItems] = useState<BalanceItem[]>([]);
-  
-  // Financial States
-  const [stats, setStats] = useState({
-    totalBalance: 0,
-    totalIncome: 0,
-    totalExpenses: 0,
-    netMargin: 0,
-    liquidity: 0,
-    solvency: 0,
-    breakEven: 12500, // Placeholder or calculated
-  });
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    const savedTxs = localStorage.getItem('stela_transactions');
-    const savedItems = localStorage.getItem('stela_balance_items');
-    
-    if (savedTxs || savedItems) {
-      const txs: Transaction[] = savedTxs ? JSON.parse(savedTxs) : [];
-      const bItems: BalanceItem[] = savedItems ? JSON.parse(savedItems) : [];
-      
-      setTransactions(txs);
-      setBalanceItems(bItems);
-
-      const income = txs.filter(t => t.type === 'income').reduce((acc, t) => acc + t.amount, 0);
-      const expenses = txs.filter(t => t.type === 'expense').reduce((acc, t) => acc + t.amount, 0);
-      
-      const ativoCirculante = bItems.filter(i => i.category === 'Ativo Circulante').reduce((acc, i) => acc + i.amount, 0);
-      const passivoCirculante = bItems.filter(i => i.category === 'Passivo Circulante').reduce((acc, i) => acc + i.amount, 0);
-      const totalAtivo = bItems.filter(i => i.category.startsWith('Ativo')).reduce((acc, i) => acc + i.amount, 0);
-      const totalPassivo = bItems.filter(i => i.category.startsWith('Passivo')).reduce((acc, i) => acc + i.amount, 0);
-
-      setStats({
-        totalBalance: income - expenses,
-        totalIncome: income,
-        totalExpenses: expenses,
-        netMargin: income > 0 ? ((income - expenses) / income) * 100 : 0,
-        liquidity: passivoCirculante > 0 ? ativoCirculante / passivoCirculante : 0,
-        solvency: totalPassivo > 0 ? totalAtivo / totalPassivo : 0,
-        breakEven: 12500
-      });
-    }
+    setIsMounted(true);
   }, []);
 
+  if (!isMounted) return null;
+
   return (
-    <div className="p-10 max-w-[1600px] mx-auto space-y-10 font-['Plus_Jakarta_Sans']">
-      {/* Welcome Header */}
-      <section className="flex justify-between items-end">
+    <div className="p-6 md:p-10 max-w-[1500px] mx-auto space-y-8 animate-in fade-in duration-1000 bg-[#F9F9F9]/50">
+      {/* HEADER SECTION - REDUZIDO 30% */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <div>
-          <h2 className="text-5xl font-medium text-[#1A1A1A] tracking-tight">Central de Indicadores</h2>
-          <p className="text-gray-400 font-bold mt-2 uppercase text-[10px] tracking-[0.2em]">Módulo 4 • Business Intelligence & Performance</p>
+          <h1 className="text-4xl md:text-5xl font-medium tracking-tight text-[#1A1A1A] font-title italic">Central de Indicadores</h1>
+          <p className="text-[8px] md:text-[9px] uppercase tracking-[0.4em] text-muted-foreground font-black mt-2">MÓDULO 4 • BUSINESS INTELLIGENCE & PERFORMANCE</p>
         </div>
-        <div className="flex gap-4">
-          <Button variant="outline" className="bg-white rounded-2xl font-black text-xs px-6 py-6 h-auto">
-            <FileDown size={18} />
-            Relatório Consolidado
-          </Button>
-          <Button asChild className="rounded-2xl font-black text-xs px-6 py-6 h-auto shadow-xl shadow-primary/20 hover:-translate-y-1 transition-all">
-            <Link href="/lancamentos">
-              <Plus size={18} />
-              Novo Lançamento
-            </Link>
-          </Button>
+        <div className="flex gap-3 w-full md:w-auto">
+          <Link href="/relatorios/dre" className="flex-1 md:flex-none">
+            <Button variant="outline" className="w-full h-12 px-5 rounded-xl font-bold border-none bg-white shadow-sm text-foreground hover:bg-gray-50 flex gap-2 text-xs">
+              <FileText size={16} /> Relatório
+            </Button>
+          </Link>
+          <Link href="/lancamentos" className="flex-1 md:flex-none">
+            <Button className="w-full h-12 px-6 rounded-xl font-black bg-[#F6ECF0] text-[#1A1A1A] hover:bg-[#E8D5D8] transition-all shadow-sm border border-[#E8D5D8]/30 text-xs">
+              <Plus className="mr-2 h-4 w-4" strokeWidth={3} /> Lançamento
+            </Button>
+          </Link>
         </div>
-      </section>
+      </div>
 
-      {/* Primary KPI Row */}
-      <section className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div className="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm">
-          <div className="flex justify-between items-start mb-4">
-            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Margem Líquida</p>
-            <Zap size={16} className="text-purple-500" />
-          </div>
-          <h4 className="text-3xl font-black text-[#1A1A1A]">{stats.netMargin.toFixed(1)}%</h4>
-          <div className="mt-4 h-1.5 w-full bg-gray-50 rounded-full overflow-hidden">
-             <div className="h-full bg-purple-500 rounded-full" style={{ width: `${Math.min(stats.netMargin, 100)}%` }}></div>
-          </div>
-        </div>
-        <div className="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm">
-          <div className="flex justify-between items-start mb-4">
-            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Liquidez Corrente</p>
-            <Activity size={16} className="text-green-500" />
-          </div>
-          <h4 className="text-3xl font-black text-[#1A1A1A]">{stats.liquidity.toFixed(2)}</h4>
-          <p className="text-[9px] text-green-500 font-black mt-2 uppercase">Saúde Financeira: Excelente</p>
-        </div>
-        <div className="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm">
-          <div className="flex justify-between items-start mb-4">
-            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Ponto de Equilíbrio</p>
-            <Target size={16} className="text-orange-500" />
-          </div>
-          <h4 className="text-3xl font-black text-[#1A1A1A]">R$ {stats.breakEven.toLocaleString('pt-BR', { notation: 'compact' })}</h4>
-          <p className="text-[9px] text-gray-400 font-black mt-2 uppercase">Meta de faturamento mensal</p>
-        </div>
-        <div className="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm">
-          <div className="flex justify-between items-start mb-4">
-            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Solvência</p>
-            <Shield size={16} className="text-blue-500" />
-          </div>
-          <h4 className="text-3xl font-black text-[#1A1A1A]">{stats.solvency.toFixed(2)}</h4>
-          <p className="text-[9px] text-blue-500 font-black mt-2 uppercase">Garantia Patrimonial</p>
-        </div>
-      </section>
-
-      {/* Main Analysis Section */}
-      <section className="grid grid-cols-12 gap-8">
-        <div className="col-span-12 lg:col-span-8 bg-white rounded-[40px] p-10 shadow-[0px_4px_30px_rgba(0,0,0,0.02)] border border-gray-100">
-          <div className="flex justify-between items-start mb-10">
-            <div>
-              <p className="text-[10px] font-black text-gray-400 mb-2 uppercase tracking-[0.2em]">EVOLUÇÃO DO FLUXO DE CAIXA</p>
-              <h3 className="text-5xl font-black text-[#1A1A1A] tracking-tighter">
-                {stats.totalBalance.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-              </h3>
+      {/* TOP CARDS - REDUZIDOS E RESPONSIVOS */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {[
+          { label: 'MARGEM LÍQUIDA', value: '90.0%', icon: Zap, color: '#A855F7', progress: 90, bg: '#F3E8FF' },
+          { label: 'LIQUIDEZ CORRENTE', value: '0.00', icon: Activity, color: '#22C55E', sub: 'EXCELENTE' },
+          { label: 'PONTO DE EQUILÍBRIO', value: 'R$ 13k', icon: Target, color: '#F97316', sub: 'META MENSAL' },
+          { label: 'SOLVÊNCIA', value: '0.00', icon: Shield, color: '#3B82F6', sub: 'GARANTIA' },
+        ].map((item, i) => (
+          <Card key={i} className="border-none shadow-[0_10px_30px_rgba(0,0,0,0.02)] rounded-[35px] p-6 bg-white group hover:shadow-xl transition-all duration-500">
+            <div className="flex justify-between items-center mb-4">
+              <p className="text-[8px] uppercase tracking-[0.2em] font-black text-muted-foreground">{item.label}</p>
+              <item.icon size={16} style={{ color: item.color }} />
             </div>
-            <div className="flex bg-gray-50 p-1.5 rounded-2xl">
-              <button className="px-4 py-2 text-xs font-black rounded-xl bg-white text-[#1A1A1A] shadow-sm">Mensal</button>
-              <button className="px-4 py-2 text-xs font-black rounded-xl text-gray-400 hover:text-[#1A1A1A]">Trimestral</button>
-            </div>
-          </div>
-          <div className="h-72 w-full">
-            <FinancialChart />
-          </div>
-        </div>
-
-        <div className="col-span-12 lg:col-span-4 flex flex-col gap-8">
-           <div className="bg-primary rounded-[40px] p-10 text-primary-foreground flex-1 relative overflow-hidden shadow-2xl">
-              <div className="relative z-10">
-                <BarChart3 className="text-primary-foreground/20 mb-6" size={40} />
-                <h4 className="text-2xl font-black mb-4 leading-tight">Distribuição de Receita</h4>
-                <p className="text-primary-foreground/50 text-sm font-medium leading-relaxed mb-8">Sua receita está concentrada em 70% Serviços e 30% Vendas diretas.</p>
-                <div className="space-y-4">
-                   <div className="flex justify-between text-[10px] font-black uppercase">
-                      <span>Serviços</span>
-                      <span>70%</span>
-                   </div>
-                   <div className="w-full h-1.5 bg-primary-foreground/10 rounded-full overflow-hidden">
-                      <div className="h-full bg-white w-[70%]"></div>
-                   </div>
-                </div>
+            <h3 className="text-3xl font-black text-[#1A1A1A] mb-2 tracking-tighter">{item.value}</h3>
+            {item.progress ? (
+              <div className="h-1.5 w-full bg-gray-50 rounded-full overflow-hidden mt-2">
+                <div className="h-full rounded-full transition-all duration-1000" style={{ width: `${item.progress}%`, backgroundColor: item.color }}></div>
               </div>
-              <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
-           </div>
-        </div>
-      </section>
+            ) : (
+              <p className="text-[8px] font-black uppercase tracking-widest" style={{ color: item.color }}>{item.sub}</p>
+            )}
+          </Card>
+        ))}
+      </div>
 
-      {/* Transactions Section */}
-      <TransactionsTable transactions={transactions} />
+      {/* MAIN CONTENT GRID - RESPONSIVO */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* FLUXO DE CAIXA - REDUZIDO */}
+        <Card className="lg:col-span-2 border-none shadow-[0_10px_30px_rgba(0,0,0,0.02)] rounded-[40px] p-8 md:p-10 bg-white relative overflow-hidden">
+          <div className="flex flex-col sm:flex-row justify-between items-start mb-8 gap-4">
+            <div>
+              <p className="text-[9px] uppercase tracking-[0.3em] font-black text-muted-foreground mb-2">EVOLUÇÃO DO FLUXO DE CAIXA</p>
+              <h2 className="text-4xl font-black text-[#1A1A1A] tracking-tighter">R$ 4.501,00</h2>
+            </div>
+            <div className="bg-[#F8F9FA] p-1.5 rounded-xl flex gap-1">
+              <Button size="sm" className="bg-white text-[#1A1A1A] shadow-sm rounded-lg px-4 text-[10px] font-bold hover:bg-white">Mensal</Button>
+              <Button size="sm" variant="ghost" className="text-muted-foreground text-[10px] font-bold hover:bg-transparent px-4">Trimestral</Button>
+            </div>
+          </div>
+          
+          <div className="h-[300px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={chartData}>
+                <defs>
+                  <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#1A1A1A" stopOpacity={0.05}/>
+                    <stop offset="95%" stopColor="#1A1A1A" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#f0f0f0" />
+                <XAxis dataKey="name" hide />
+                <YAxis hide />
+                <Tooltip contentStyle={{ borderRadius: '15px', border: 'none', boxShadow: '0 10px 30px rgba(0,0,0,0.05)', fontSize: '12px' }} />
+                <Area type="monotone" dataKey="value" stroke="#1A1A1A" strokeWidth={3} fillOpacity={1} fill="url(#colorValue)" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+          
+          <div className="flex justify-center mt-4">
+             <div className="bg-white px-3 py-1.5 rounded-lg shadow-sm border border-gray-50 flex items-center gap-2">
+                <span className="text-[9px] font-bold text-gray-400 italic">Central de Inteligência Stela</span>
+             </div>
+          </div>
+        </Card>
+
+        {/* DISTRIBUIÇÃO - REDUZIDO */}
+        <Card className="border-none shadow-[0_10px_30px_rgba(0,0,0,0.02)] rounded-[40px] p-8 md:p-10 bg-[#F6ECF0]/30 flex flex-col">
+          <div className="mb-6 text-[#1A1A1A]/30">
+            <FileText size={32} strokeWidth={1} />
+          </div>
+          <h2 className="text-3xl font-black text-[#1A1A1A] mb-4 tracking-tight leading-tight font-title">Distribuição de Receita</h2>
+          <p className="text-xs text-muted-foreground font-medium leading-relaxed mb-8">
+            Análise de concentração por canal de faturamento.
+          </p>
+          
+          <div className="space-y-8 mt-auto">
+            <div className="space-y-3">
+              <div className="flex justify-between items-end">
+                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[#1A1A1A]">SERVIÇOS</p>
+                <p className="text-[9px] font-black text-[#1A1A1A]">70%</p>
+              </div>
+              <div className="h-1.5 w-full bg-white/50 rounded-full overflow-hidden">
+                <div className="h-full bg-[#1A1A1A]/10 rounded-full w-[70%]"></div>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex justify-between items-end opacity-50">
+                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[#1A1A1A]">VENDAS</p>
+                <p className="text-[9px] font-black text-[#1A1A1A]">30%</p>
+              </div>
+              <div className="h-1.5 w-full bg-white/50 rounded-full overflow-hidden">
+                <div className="h-full bg-[#1A1A1A]/5 rounded-full w-[30%]"></div>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
     </div>
   );
 }
