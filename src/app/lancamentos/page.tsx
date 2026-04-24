@@ -109,7 +109,7 @@ export default function LancamentosPage() {
     setAmount(tx.amount.toString());
     setCategory(tx.category);
     setType(tx.type);
-    setDueDate(tx.dueDate);
+    setDueDate(tx.dueDate || '');
     setStatus(tx.status);
     setShowForm(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
