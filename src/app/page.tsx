@@ -56,8 +56,8 @@ export default function Dashboard() {
       {/* HEADER SECTION - REDUZIDO 30% */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <div>
-          <h1 className="text-4xl md:text-5xl font-medium tracking-tight text-[#1A1A1A] font-title italic">Central de Indicadores</h1>
-          <p className="text-[8px] md:text-[9px] uppercase tracking-[0.4em] text-muted-foreground font-black mt-2">MÓDULO 4 • BUSINESS INTELLIGENCE & PERFORMANCE</p>
+          <h1 className="text-3xl md:text-4xl font-medium tracking-tight text-[#1A1A1A] font-title italic leading-none">Central de Indicadores</h1>
+          <p className="text-[7px] md:text-[8px] uppercase tracking-[0.4em] text-muted-foreground font-black mt-1">MÓDULO 4 • BUSINESS INTELLIGENCE & PERFORMANCE</p>
         </div>
         <div className="flex gap-3 w-full md:w-auto">
           <Link href="/relatorios/dre" className="flex-1 md:flex-none">
@@ -66,7 +66,7 @@ export default function Dashboard() {
             </Button>
           </Link>
           <Link href="/lancamentos" className="flex-1 md:flex-none">
-            <Button className="w-full h-12 px-6 rounded-xl font-black bg-[#F6ECF0] text-[#1A1A1A] hover:bg-[#E8D5D8] transition-all shadow-sm border border-[#E8D5D8]/30 text-xs">
+            <Button className="w-full h-12 px-6 rounded-xl font-black bg-primary text-primary-foreground hover:opacity-90 transition-all shadow-lg shadow-primary/10 text-xs">
               <Plus className="mr-2 h-4 w-4" strokeWidth={3} /> Lançamento
             </Button>
           </Link>
@@ -86,7 +86,7 @@ export default function Dashboard() {
               <p className="text-[8px] uppercase tracking-[0.2em] font-black text-muted-foreground">{item.label}</p>
               <item.icon size={16} style={{ color: item.color }} />
             </div>
-            <h3 className="text-3xl font-black text-[#1A1A1A] mb-2 tracking-tighter">{item.value}</h3>
+            <h3 className="text-2xl font-medium text-[#1A1A1A] mb-1 tracking-tighter font-sans not-italic">{item.value}</h3>
             {item.progress ? (
               <div className="h-1.5 w-full bg-gray-50 rounded-full overflow-hidden mt-2">
                 <div className="h-full rounded-full transition-all duration-1000" style={{ width: `${item.progress}%`, backgroundColor: item.color }}></div>
@@ -105,7 +105,7 @@ export default function Dashboard() {
           <div className="flex flex-col sm:flex-row justify-between items-start mb-8 gap-4">
             <div>
               <p className="text-[9px] uppercase tracking-[0.3em] font-black text-muted-foreground mb-2">EVOLUÇÃO DO FLUXO DE CAIXA</p>
-              <h2 className="text-4xl font-black text-[#1A1A1A] tracking-tighter">R$ 4.501,00</h2>
+              <h2 className="text-3xl font-medium text-[#1A1A1A] tracking-tighter font-sans leading-none">R$ 4.501,00</h2>
             </div>
             <div className="bg-[#F8F9FA] p-1.5 rounded-xl flex gap-1">
               <Button size="sm" className="bg-white text-[#1A1A1A] shadow-sm rounded-lg px-4 text-[10px] font-bold hover:bg-white">Mensal</Button>
@@ -139,11 +139,11 @@ export default function Dashboard() {
         </Card>
 
         {/* DISTRIBUIÇÃO - REDUZIDO */}
-        <Card className="border-none shadow-[0_10px_30px_rgba(0,0,0,0.02)] rounded-[40px] p-8 md:p-10 bg-[#F6ECF0]/30 flex flex-col">
+        <Card className="border-none shadow-[0_10px_30px_rgba(0,0,0,0.02)] rounded-[40px] p-8 md:p-10 bg-primary/10 flex flex-col">
           <div className="mb-6 text-[#1A1A1A]/30">
             <FileText size={32} strokeWidth={1} />
           </div>
-          <h2 className="text-3xl font-black text-[#1A1A1A] mb-4 tracking-tight leading-tight font-title">Distribuição de Receita</h2>
+          <h2 className="text-2xl font-medium text-[#1A1A1A] mb-3 tracking-tight leading-tight font-title italic">Distribuição de Receita</h2>
           <p className="text-xs text-muted-foreground font-medium leading-relaxed mb-8">
             Análise de concentração por canal de faturamento.
           </p>

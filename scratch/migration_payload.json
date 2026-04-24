@@ -1,0 +1,771 @@
+[
+  {
+    "name": "RAZÃO SOCIAL",
+    "type": "empresa",
+    "metadata": {
+      "tipo": "TIPO",
+      "nome_fantasia": "NOME FANTASIA",
+      "cnpj": "CNPJ",
+      "endereco": "ENDEREÇO",
+      "cidade": "CIDADE",
+      "uf": "UF"
+    }
+  },
+  {
+    "name": "ALIANÇA FRANCESA - CCFB - AF DE GOIAS ",
+    "type": "empresa",
+    "metadata": {
+      "tipo": "MATRIZ",
+      "nome_fantasia": "CENTRO CULTURAL FRANCO-BRASILEIRO ALIANCA FRANCESA DE GOIAS",
+      "cnpj": "00.098.251/0001-50",
+      "endereco": "RUA 38, Nº 541, SETOR MARISTA - 74.150-250",
+      "cidade": "GOIÂNIA",
+      "uf": "GO"
+    }
+  },
+  {
+    "name": "CLIMA LAURINDA FREITAS",
+    "type": "empresa",
+    "metadata": {
+      "tipo": "FILIAL",
+      "nome_fantasia": "CLIMA LAURINDA FREITAS",
+      "cnpj": "",
+      "endereco": "RUA 14, QD. 28 LT. 09 E Nº 88 - CENTRO ",
+      "cidade": "GOIÂNIA",
+      "uf": "GO"
+    }
+  },
+  {
+    "name": "BANCO ",
+    "type": "banco",
+    "metadata": {
+      "cod_banco": "COD. BANCO",
+      "agencia": "AGÊNCIA",
+      "op": "OP",
+      "conta": "N. CONTA",
+      "saldo_inicial": 0
+    }
+  },
+  {
+    "name": "PAGBANK",
+    "type": "banco",
+    "metadata": {
+      "cod_banco": "290",
+      "agencia": "1",
+      "op": "",
+      "conta": "55669294-5",
+      "saldo_inicial": 273.67
+    }
+  },
+  {
+    "name": "SICOOB",
+    "type": "banco",
+    "metadata": {
+      "cod_banco": "3300-6",
+      "agencia": "",
+      "op": "",
+      "conta": "2.982-3",
+      "saldo_inicial": 939.94
+    }
+  },
+  {
+    "name": "ALUNO",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "RESPONSÁVEL FINANCEIRO",
+      "documento": "CNPJ / CPF",
+      "cidade": "CIDADE",
+      "telefone": "TELEFONE "
+    }
+  },
+  {
+    "name": "ALESSANDRA GOIAZ MENDONCA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "ALEXANDRE RODRIGUES",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "ALICIA FIGUEIRA DIAS",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "ALINE BRETTAS FERREIRA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "ANA DIAS CAMPOS RODRIGUES",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "ANA FLÁVIA BRAZ DONÁ",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "ANA LUISA BORGES OLIVEIRA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "ANTÔNIO BENTO DA SILVEIRA NETO",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "ANTONIO R VASCONCELOS",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "AUGUSTA FINOTTI BRAZAO",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "BRENO AUGUSTO DE OLIVEIRA PRADO",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "CAIO A GUSMAN GARCIA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "CAROLINA BRETTAS LASMAR",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "CAROLINA MENDES LOUZA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "CRISTIANA MARIA TOSCANO",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "DANIEL SEBBA RADY ALBERICI",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "DEBORAH HELENA DE OLIVEIRA ABREU",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "EGRIVAINE GOULART OLIVEIRA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "ELAINE FRANCO LEÃO",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "FERNANDA OLIVEIRA ARAUJO",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "FERNANDO MALTEZ BEZERRA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "GABRIEL NETO",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "GABRIEL PEDROZA CORTES MARQUES",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "GABRIEL QUEIROZ FERNANDES",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "GIOVANNA FÉRES NALIN",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "GLAUCO HENRIQUE MATWIJKOW DE FREITAS",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "GUILHERME FELICIANO RODRIGUES",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "HEITOR REZENDE DE FREITAS",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "HELENA TOSCANO SOARES",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "IZIS TAVARES ALFAIA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "JESSICA PINHEIRO DE VASCONCELOS",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "JONATHAN CHRISTIAN FERREIRA ROCHA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "JULIA CARNEIRO GODOY DE SOUSA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "JULIA CRISTINA ROCHA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "JUSSARA OLIVEIRA DE MORAES PRADO",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "LAÍS MOULIN LIMA REZENDE DE CASTRO",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "LAURA FABIAN DE CARVALHO RAMOS",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "LÍDIA BARROS NERCESSIAN",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "LIGIA C ROCHA BEZERRA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "LINDOMAR MENDES LOUZA MARTINS",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "LUCAS GONÇALVES",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "LUDMILA PEDROZA CORTES MARQUES",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "LUDMYLLA SANTANA VIEIRA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "MARIA ELISA CATANI BATISTA REIS",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "MARIA FERNANDA BRAZÃO ARAÚJO",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "MARIA LUÍZA BARROS CAVALCANTE",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "MARIVALDO MONTEIRO ROCHA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "MATHEUS C DEL DUQUI",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "MATHEUS FERREIRA GONCALVES",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "MATHEUS HENRIQUE GOMIDES",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "MATHEUS VAZ TEIXEIRA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "MIRNA COSTA DE CARVALHO CAMAROTA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "MOISÉS RODRIGUES DA SILVA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "NAJLA LOPES CINTRA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "PAGAR.ME PAGAMENTOS S.A.",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "PAULA RENATA C BRAGA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "RAFAEL ALVES FOLHA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "RENDIMENTO DA CONTA - RENDIMENTO LÍQUIDO SOBRE DINHEIRO EM CONTA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "ROBERTA RASSI ALMEIDA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "SIMONE CERCHI RIBEIRO",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "SOFIA CORTEZ DE SOUZA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "TIAGO RODRIGUES MIRANDA DE AGUIAR",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "URYA BLASZKIEWICZ LIMA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "VENDAS - DISPONÍVEL CREDITO MASTERCARD",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "VENDAS - DISPONÍVEL CREDITO VISA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "VENDAS - DISPONÍVEL PIX",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "VIVIANE BARROS MACIEL",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "EMBAIXADA FRANCESA",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  },
+  {
+    "name": "FERNANDO DE OLIVEIRA PRADO",
+    "type": "cliente",
+    "metadata": {
+      "responsavel": "",
+      "documento": "",
+      "cidade": "",
+      "telefone": ""
+    }
+  }
+]

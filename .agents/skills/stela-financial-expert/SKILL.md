@@ -26,6 +26,20 @@ Siga estas fórmulas rigorosamente:
 
 ---
 
+## 📑 Taxonomia de Cadastros (v2.1)
+O sistema deve manter paridade 1:1 com as abas da planilha mestre através destas 6 categorias core:
+ 
+1.  **EMPRESA**: Razão Social, Nome Fantasia, CNPJ, Endereço.
+2.  **CLIENTE**: Nome, Responsável, CPF/CNPJ, Telefone, E-mail.
+3.  **FORNECEDOR**: Nome, Ramo, CPF/CNPJ, Telefone, Contato.
+4.  **BANCO**: Agência, Conta, OP, Saldo Inicial, Data Saldo.
+5.  **CENTRO DE CUSTO**: Classificação por nome de projeto ou unidade.
+6.  **PLANO DE CONTAS**: Estrutura hierárquica de Receitas e Despesas.
+ 
+> **Nota:** O módulo de **Endividamento** é tratado como inteligência separada (Fase 2) e não deve ser misturado com cadastros operacionais simples.
+ 
+---
+
 ## 🛠️ Diretrizes de Implementação
 
 1.  **Tipos de Dados**: Use sempre aritmética de precisão fixa (ex: representar dinheiro em centavos como Inteiro ou usar a biblioteca `Decimal.js`) para evitar erros de ponto flutuante do Javascript.

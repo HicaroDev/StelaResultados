@@ -9,6 +9,8 @@ interface Profile {
   id: string;
   full_name: string | null;
   role: 'admin' | 'common';
+  empresa_id?: string | null;
+  permissions?: Record<string, boolean>;
 }
 
 interface AuthContextType {
@@ -34,7 +36,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  const fetchProfile = async (userId: string) => {
+  const fetchProfile = async (userId: string, currentSession: Session | null) => {
+    // Chave Mestra 2.0: Garante acesso IMEDIATO para o e-mail oficial
+    const isMasterEmail = currentSession?.user?.email === 'admin@lemmi.com';
+    
+    if (isMasterEmail) {
+      setProfile({
+        id: userId,
+        full_name: 'Administrador Stela',
+        role: 'admin',
+        permissions: {
+          dashboard: true,
+          cadastro: true,
+          lancamentos: true,
+          conciliacao: true,
+          fluxo: true,
+          relatorios: true,
+          usuarios: true
+        }
+      });
+      return; // Ignora o banco de dados para o Admin Master
+    }
+
     const { data, error } = await supabase
       .from('profiles')
       .select('*')
@@ -44,7 +67,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (data) {
       setProfile(data);
     } else {
-      // Se não existir perfil (ex: primeiro login), cria um padrão
       const { data: newProfile } = await supabase
         .from('profiles')
         .insert([{ id: userId, role: 'common' }])
@@ -56,10 +78,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     // Pegar sessão inicial
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      if (session?.user) fetchProfile(session.user.id);
+      if (session?.user) {
+        await fetchProfile(session.user.id, session);
+      }
       setLoading(false);
     });
 
@@ -69,7 +93,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(session?.user ?? null);
       
       if (session?.user) {
-        fetchProfile(session.user.id);
+        fetchProfile(session.user.id, session);
       } else {
         setProfile(null);
       }

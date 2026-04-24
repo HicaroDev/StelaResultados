@@ -1,0 +1,1850 @@
+[
+  {
+    "name": "NOME FANTASIA",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "NOME FORNECEDOR",
+      "documento": "CNPJ / CPF",
+      "ramo": "RAMO",
+      "contato": "NOME CONTATO"
+    }
+  },
+  {
+    "name": "ALEX DE ANDRADE MEDEIROS",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "ALEX DE ANDRADE MEDEIROS",
+      "documento": "",
+      "ramo": "PROFESSOR DE LINGUA FRANCESA",
+      "contato": ""
+    }
+  },
+  {
+    "name": "ALVORADA FERRAGENS",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "ALVORADA FERRAGENS",
+      "documento": "",
+      "ramo": "FERRAGISTA",
+      "contato": ""
+    }
+  },
+  {
+    "name": "ANA PAULA GOMES REBOUCAS",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "ANA PAULA GOMES REBOUCAS",
+      "documento": "",
+      "ramo": "COORDENADORA PEDAGÓGICA",
+      "contato": ""
+    }
+  },
+  {
+    "name": "APOIO ASSESSORIA E GESTÃO DE NEGÓCIOS LTDA",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "APOIO ASSESSORIA E GESTÃO DE NEGÓCIOS LTDA",
+      "documento": "",
+      "ramo": "CONTADOR",
+      "contato": ""
+    }
+  },
+  {
+    "name": "CEDRIC RAMOS DA COSTA",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "CEDRIC RAMOS DA COSTA",
+      "documento": "",
+      "ramo": "PROFESSOR DE LINGUA FRANCESA",
+      "contato": ""
+    }
+  },
+  {
+    "name": "CLARO S/A",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "CLARO S/A",
+      "documento": "",
+      "ramo": "",
+      "contato": ""
+    }
+  },
+  {
+    "name": "EDINILDE PÊSSEGO LIRA",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "EDINILDE PÊSSEGO LIRA",
+      "documento": "",
+      "ramo": "",
+      "contato": ""
+    }
+  },
+  {
+    "name": "FERNANDA OLIVEIRA ARAUJO",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "FERNANDA OLIVEIRA ARAUJO",
+      "documento": "",
+      "ramo": "",
+      "contato": ""
+    }
+  },
+  {
+    "name": "GRAZIELA CANDIDO GONCALVES",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "GRAZIELA CANDIDO GONCALVES",
+      "documento": "",
+      "ramo": "PROFESSOR DE LINGUA FRANCESA",
+      "contato": ""
+    }
+  },
+  {
+    "name": "JACYARA STHEFANNE CARVALHO FREITAS\nBRUNEAU",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "JACYARA STHEFANNE CARVALHO FREITAS\nBRUNEAU",
+      "documento": "",
+      "ramo": "ADVOGADA",
+      "contato": ""
+    }
+  },
+  {
+    "name": "MARCOS VINICIUS CHAVIER COSTA",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "MARCOS VINICIUS CHAVIER COSTA",
+      "documento": "",
+      "ramo": "",
+      "contato": ""
+    }
+  },
+  {
+    "name": "MARIA PEREIRA DA SILVA",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "MARIA PEREIRA DA SILVA",
+      "documento": "",
+      "ramo": "",
+      "contato": ""
+    }
+  },
+  {
+    "name": "MAXIME EMMANUEL ANTHONY BRUNEAU",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "MAXIME EMMANUEL ANTHONY BRUNEAU",
+      "documento": "",
+      "ramo": "PROFESSOR DE LINGUA FRANCESA",
+      "contato": ""
+    }
+  },
+  {
+    "name": "MENSAN BENOIT LAWSON HELLU",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "MENSAN BENOIT LAWSON HELLU",
+      "documento": "",
+      "ramo": "PROFESSOR DE LINGUA FRANCESA",
+      "contato": ""
+    }
+  },
+  {
+    "name": "PAGAMENTO DE CONTA - APOIO ASSESSORIA E GESTAO DE NEGOCIOS LTDA",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "PAGAMENTO DE CONTA - APOIO ASSESSORIA E GESTAO DE NEGOCIOS LTDA",
+      "documento": "",
+      "ramo": "",
+      "contato": ""
+    }
+  },
+  {
+    "name": "PAPELARIA TRIBUTARIA",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "PAPELARIA TRIBUTARIA",
+      "documento": "",
+      "ramo": "PROFESSOR DE LINGUA FRANCESA",
+      "contato": ""
+    }
+  },
+  {
+    "name": "PATRICK LUCIEN HARDY",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "PATRICK LUCIEN HARDY",
+      "documento": "",
+      "ramo": "PROFESSOR DE LINGUA FRANCESA",
+      "contato": ""
+    }
+  },
+  {
+    "name": "RITA SIMHA HAIAT DE SOUSA",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "RITA SIMHA HAIAT DE SOUSA",
+      "documento": "",
+      "ramo": "",
+      "contato": ""
+    }
+  },
+  {
+    "name": "CAIXA ECONOMICA FEDERAL",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "CAIXA ECONOMICA FEDERAL",
+      "documento": "",
+      "ramo": "",
+      "contato": ""
+    }
+  },
+  {
+    "name": "RECEITA FEDERAL ",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "RECEITA FEDERAL ",
+      "documento": "",
+      "ramo": "",
+      "contato": ""
+    }
+  },
+  {
+    "name": "GUARDE TOP SELF STORAGE",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "ATLANTICA EMPREENDIMENTOS",
+      "documento": "11.246.805/0001 -36",
+      "ramo": "",
+      "contato": ""
+    }
+  },
+  {
+    "name": "PRIMASOFT (SOPHIA)",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "PRIMASOFT INFORMATICA LTDA.",
+      "documento": "69.112.514/0001-35",
+      "ramo": "",
+      "contato": ""
+    }
+  },
+  {
+    "name": "SICOOB",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "SICOOB",
+      "documento": "",
+      "ramo": "",
+      "contato": ""
+    }
+  },
+  {
+    "name": "LOCAWEB",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "LOCAWEB",
+      "documento": "",
+      "ramo": "",
+      "contato": ""
+    }
+  },
+  {
+    "name": "FEDERAL IMÓVEIS",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "FEDERAL IMÓVEIS",
+      "documento": "",
+      "ramo": "",
+      "contato": ""
+    }
+  },
+  {
+    "name": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS COMERCIANTES DE CONFECC",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "",
+      "documento": "",
+      "ramo": "",
+      "contato": ""
+    }
+  },
+  {
+    "name": "CAMILA NOGUEIRA SILVA",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "CAMILA NOGUEIRA SILVA",
+      "documento": "",
+      "ramo": "COORDENADORA PEDAGÓGICA",
+      "contato": ""
+    }
+  },
+  {
+    "name": "LUCIVALDO LUIZ DA SILVA",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "LUCIVALDO LUIZ DA SILVA",
+      "documento": "",
+      "ramo": "SECRETÁRIO",
+      "contato": ""
+    }
+  },
+  {
+    "name": "PREFEITURA DE GOIÂNIA - SECRETARIA DE FINANÇAS",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "",
+      "documento": "",
+      "ramo": "",
+      "contato": ""
+    }
+  },
+  {
+    "name": "THAIRINY KARLA BATISTA CRUVINEL DE ALMEIDA",
+    "type": "fornecedor",
+    "metadata": {
+      "nome_fornecedor": "",
+      "documento": "",
+      "ramo": "PROFESSOR DE LINGUA FRANCESA",
+      "contato": ""
+    }
+  },
+  {
+    "name": "CENTRO DE CUSTO",
+    "type": "centro_custo",
+    "metadata": {}
+  },
+  {
+    "name": "ADM",
+    "type": "centro_custo",
+    "metadata": {}
+  },
+  {
+    "name": "MATRICULA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "MENSALIDADE",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "-",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "APORTE SOCIO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "NÃO OPERACIONAL"
+    }
+  },
+  {
+    "name": "DINHEIRO SAQUE",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "NÃO OPERACIONAL"
+    }
+  },
+  {
+    "name": "EMPRÉSTIMOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "NÃO OPERACIONAL"
+    }
+  },
+  {
+    "name": "EMPRÉSTIMOS A CLIENTES",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "NÃO OPERACIONAL"
+    }
+  },
+  {
+    "name": "ESTORNO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "NÃO OPERACIONAL"
+    }
+  },
+  {
+    "name": "OUTRAS RECEITAS NÃO OPERACIONAIS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "NÃO OPERACIONAL"
+    }
+  },
+  {
+    "name": "RECEITAS FINANCEIRAS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "NÃO OPERACIONAL"
+    }
+  },
+  {
+    "name": "RENDIMENTO DE APLICAÇÃO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "NÃO OPERACIONAL"
+    }
+  },
+  {
+    "name": "RESGATE DE APLICAÇÃO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "NÃO OPERACIONAL"
+    }
+  },
+  {
+    "name": "-",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "NÃO OPERACIONAL"
+    }
+  },
+  {
+    "name": "APLICAÇÃO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "CAPITAL DE GIRO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "DEVOLUÇÃO SÓCIOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "DINHEIRO (SAQUE)",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "EMPRÉSTIMOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "EMPRÉSTIMOS SÓCIOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "OUTROS CRÉDITOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "PAGAMENTO EMPRÉSTIMOS SÓCIOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "RENDIMENTO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "RESGATE DE APLICAÇÃO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "TRANSFERÊNCIA ENTRE CONTAS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "-",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "receita",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "ÁGUA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "ALIMENTAÇÃO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "ALUGUEL DE EQUIPAMENTOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "ART",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "BORRACHARIA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "COMBUSTÍVEL",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "COMPRA DE MERCADORIA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "EMPRÉSTIMOS A CLIENTES",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "ESTACIONAMENTO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "EXTRAS HOSPEDAGEM",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "FARMACIA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "FRETE",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "HOSPEDAGEM",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "IMPRESSÃO DE PROJETO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "LAVANDERIA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "LIMPEZA CASA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "MATERIAL E MÃO DE OBRA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "MOTO BOY",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "PAGAMENTO DE MÃO DE OBRA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "PEÇAS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "REEMBOLSO CLIENTE",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "REEMBOLSO FUNCIONÁRIO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "REEMBOLSO SÓCIO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "SEM PARAR - PEDÁGIO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "SERVIÇO DE TORNEIRO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "TARIFA DE PIX",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "TRANSPORTADORA ",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "TRANSPORTE",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OPERACIONAL"
+    }
+  },
+  {
+    "name": "ÁGUA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "ALIMENTAÇÃO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "ALUGUEL",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "ASSESSORIA / CONSULTORIA ",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "BENS DURÁVEIS DE PEQUENO VALOR",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "CARTÓRIO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "CERTIDÃO SIMPLIFICADA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "CERTIFICADO DIGITAL",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "COMBUSTÍVEL",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "CONTADOR",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "DOMÍNIO DE EMAIL",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "ENERGIA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "ESTACIONAMENTO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "FRETES",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "GUARDA DE BENS IDENTIFICADA POR BOX N° 18",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "HONORÁRIOS ADVOCATÍCIOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "INFORMATICA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "INTERNET",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "LANCHE",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "MANUTENÇÃO ESCRITÓRIO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "MATERIAL DE LIMPEZA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "MATERIAL ESCRITORIO ",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "MATERIAL MANUTENÇÃO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "MOTOBOY",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "OUTRAS DESPESAS ADMINISTRATIVAS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "REEMBOLSO ",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "REFORMAS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "REUNIÃO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "SISTEMA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "TARIFA BANCÁRIA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "TAXA CARTÃO ",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "TELEFONE",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "TRANSPORTE",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "ADMINISTRATIVA"
+    }
+  },
+  {
+    "name": "BRINDES",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "COMERCIAL"
+    }
+  },
+  {
+    "name": "MATERIAL DIVULGAÇÃO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "COMERCIAL"
+    }
+  },
+  {
+    "name": "OUTRAS DESPESAS COMERCIAIS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "COMERCIAL"
+    }
+  },
+  {
+    "name": "PROPAGANDA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "COMERCIAL"
+    }
+  },
+  {
+    "name": "13º 1ª PARCELA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "13º 2ª PARCELA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "ACORDO TRABALHISTA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "ALIMENTAÇÃO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "ASSIDUIDADE",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "BENEFICIOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "BOLSA ESTAGIÁRIOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "CURSOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "DESCONTO EM FOLHA EMPRÉSTIMO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "DIÁRIA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "DOCUMENTOS PCMSO / PGR / LTCAT",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "EPI'S",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "EXAMES CLINICO / ADMISSIONAL / DEMISSIONAL",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "FÉRIAS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "FGTS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "FGTS / RESCISÓRIO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "GRATIFICAÇÃO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "GUIA INSS FUNCIONÁRIO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "HORA EXTRA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "LANCHES",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "MEDICAMENTOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "OUTRAS DESPESAS COM RH",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "PAGAMENTO DE MÃO DE OBRA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "PARTICIPAÇÃO DE LUCROS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "PLANO DE SAÚDE",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "PONTO ELETRÔNICO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "PRO-LABORE",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "RESCISÃO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "SALÁRIOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "SEGURO DE VIDA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "UNIFORME",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "VALE TRANSPORTE",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "PROFESSOR PESSOA JURÍDICA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "UNIFORME",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "VALE TRANSPORTE",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "PROFESSOR PESSOA JURÍDICA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "PESSOAL"
+    }
+  },
+  {
+    "name": "DEVOLUÇÃO DE EMPRÉSTIMO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "FINANCEIRA"
+    }
+  },
+  {
+    "name": "MATERIAIS DE USO E CONSUMO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "FINANCEIRA"
+    }
+  },
+  {
+    "name": "OUTRAS DESPESAS NÃO OPERACIONAIS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "FINANCEIRA"
+    }
+  },
+  {
+    "name": "RESGATE APLICAÇÕES",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "FINANCEIRA"
+    }
+  },
+  {
+    "name": "TARIFA BANCÁRIA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "FINANCEIRA"
+    }
+  },
+  {
+    "name": "TARIFA PIX",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "FINANCEIRA"
+    }
+  },
+  {
+    "name": "ALVARÁ DE INSPENÇÃO SANITÁRIA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "IMPOSTOS"
+    }
+  },
+  {
+    "name": "FGTS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "IMPOSTOS"
+    }
+  },
+  {
+    "name": "ICMS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "IMPOSTOS"
+    }
+  },
+  {
+    "name": "INSS- GPS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "IMPOSTOS"
+    }
+  },
+  {
+    "name": "IPTU",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "IMPOSTOS"
+    }
+  },
+  {
+    "name": "IPVA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "IMPOSTOS"
+    }
+  },
+  {
+    "name": "OUTROS IMPOSTOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "IMPOSTOS"
+    }
+  },
+  {
+    "name": "SIMPLES NACIONAL",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "IMPOSTOS"
+    }
+  },
+  {
+    "name": "TAXA BOMBEIROS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "IMPOSTOS"
+    }
+  },
+  {
+    "name": "TAXA DE LICENÇA PARA FUNCIONAMENTO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "IMPOSTOS"
+    }
+  },
+  {
+    "name": "IMOBILIZADO - AQUISIÇÃO DE IMÓVEIS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "INVESTIMENTOS"
+    }
+  },
+  {
+    "name": "IMOBILIZADO - AQUISIÇÃO DE SOFTWARE",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "INVESTIMENTOS"
+    }
+  },
+  {
+    "name": "IMOBILIZADO - BENFEITORIAS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "INVESTIMENTOS"
+    }
+  },
+  {
+    "name": "IMOBILIZADO - COMPUTADORES E PERIFERICOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "INVESTIMENTOS"
+    }
+  },
+  {
+    "name": "IMOBILIZADO - MÁQUINAS, EQUIPAMENTOS E FERRAMENTAS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "INVESTIMENTOS"
+    }
+  },
+  {
+    "name": "IMOBILIZADO - MARCAS E PATENTES",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "INVESTIMENTOS"
+    }
+  },
+  {
+    "name": "IMOBILIZADO - MOVEIS E UTENSILIOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "INVESTIMENTOS"
+    }
+  },
+  {
+    "name": "IMOBILIZADO - VEÍCULOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "INVESTIMENTOS"
+    }
+  },
+  {
+    "name": "OUTROS INVESTIMENTOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "INVESTIMENTOS"
+    }
+  },
+  {
+    "name": "PNEUS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "INVESTIMENTOS"
+    }
+  },
+  {
+    "name": "CLT",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "COFINS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "CONTRIBUIÇÃO EMPREGADOR",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "CONTRIBUIÇÃO INCRA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "CONTRIBUIÇÃO SALÁRIO EDUCAÇÃO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "CONTRIBUIÇÃO SEBRAE",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "CONTRIBUIÇÃO SEBRAE",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "CONTRIBUIÇÃO SEGURADOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "CONTRIBUIÇÃO SESC",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "CP - PATRONAL",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "CP - SEGUROS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "CP - TERCEIROS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "DARF",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "DCTF - WEB",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "EMPRÉSTIMOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "EMPRÉSTIMOS BANCÁRIOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "IPTU",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "IRFF - DARF",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "IRPF",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "IRPJ - FONTE",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "ISS - RETIDO NA FONTE",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "OUTROS ENDIVIDAMENTOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "PIS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "PROTESTO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "RISCOS AMBIENTAIS - APOSENTADORIA ESPECIAL",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "SPC / SERASA",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "TAXA DE LICENÇA PARA FUNCIONAMENTO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "TAXA DE LICENÇA PARA EXPL. DE MEIOS PUBLICITÁRIOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "TAXA DE EXPEDIENTE DE SERVIÇOS DIVERSOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "MULTA FORMAL",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "IPTU",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "OUTRAS"
+    }
+  },
+  {
+    "name": "APLICAÇÃO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "TRANSFERÊNCIAS"
+    }
+  },
+  {
+    "name": "CAPITAL DE GIRO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "TRANSFERÊNCIAS"
+    }
+  },
+  {
+    "name": "EMPRÉSTIMO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "TRANSFERÊNCIAS"
+    }
+  },
+  {
+    "name": "OUTROS DÉBITOS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "TRANSFERÊNCIAS"
+    }
+  },
+  {
+    "name": "RESGATE DE APLICAÇÃO",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "TRANSFERÊNCIAS"
+    }
+  },
+  {
+    "name": "RETIRADA SOCIOS ",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "TRANSFERÊNCIAS"
+    }
+  },
+  {
+    "name": "SAQUE",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "TRANSFERÊNCIAS"
+    }
+  },
+  {
+    "name": "TRANSFERÊNCIA ENTRE CONTAS",
+    "type": "plano_contas",
+    "metadata": {
+      "classificacao": "despesa",
+      "grupo": "TRANSFERÊNCIAS"
+    }
+  }
+]
