@@ -19,7 +19,7 @@ export default function Sidebar() {
 
   const links = [
     { href: '/', label: 'Dashboard', icon: LayoutDashboard },
-    { href: '/lancamentos', label: 'Movimentações', icon: Receipt },
+    { href: '/lancamentos', label: 'Lançamentos', icon: Receipt },
     { href: '/relatorios/fluxo', label: 'Fluxo de Caixa', icon: TrendingUp },
     { href: '/relatorios/dre', label: 'DRE Analítico', icon: FileText },
     { href: '/relatorios/balanco', label: 'Balanço Geral', icon: PieChart },
@@ -72,6 +72,10 @@ export default function Sidebar() {
         >
           Direct
         </button>
+      </div>
+      
+      <div className="px-5 py-2 text-center">
+        <p className="text-[8px] font-black text-foreground uppercase tracking-[0.3em]">Stela v1.20-beta</p>
       </div>
     </aside>
   );

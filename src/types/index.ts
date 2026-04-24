@@ -1,4 +1,5 @@
 export type TransactionType = 'income' | 'expense';
+export type TransactionStatus = 'pendente' | 'pago' | 'atrasado' | 'cancelado';
 
 export interface Transaction {
   id: string;
@@ -8,7 +9,7 @@ export interface Transaction {
   date: string;
   dueDate?: string;
   paymentDate?: string;
-  status: 'pago' | 'pendente';
+  status: TransactionStatus;
   type: TransactionType;
 }
 
