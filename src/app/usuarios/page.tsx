@@ -46,7 +46,7 @@ const MODULES = [
 ];
 
 export default function UsuariosPage() {
-  const { profile } = useAuth();
+  const { profile, isAdmin, selectedEmpresaId: activeEmpresaId } = useAuth();
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [empresas, setEmpresas] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -90,22 +90,35 @@ export default function UsuariosPage() {
     try {
       console.log('Iniciando busca de dados...');
       
-      const { data: userData, error: userError } = await supabase
+      // 1. Buscar Perfis (Com isolamento)
+      let profileQuery = supabase
         .from('profiles')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (userError) {
-        console.error('ERRO CRÍTICO PROFILES:', userError);
-      } else {
-        console.log('PROFILES OK:', userData?.length, 'usuários');
-        setUsers(userData || []);
+        .select('*');
+      
+      // Se não for o admin master, filtra pela empresa ativa
+      if (!isAdmin && activeEmpresaId) {
+        profileQuery = profileQuery.eq('empresa_id', activeEmpresaId);
       }
+      
+      const { data: userData, error: userError } = await profileQuery.order('created_at', { ascending: false });
 
-      const { data: empData, error: empError } = await supabase
+      if (userError) throw userError;
+      setUsers(userData || []);
+
+      // 2. Buscar Empresas (Apenas as permitidas)
+      let empQuery = supabase
         .from('base_registry')
         .select('id, name')
         .eq('type', 'empresa');
+
+      if (!isAdmin) {
+        const empresaIds = empresas.map(e => e.id);
+        if (empresaIds.length > 0) {
+          empQuery = empQuery.in('id', empresaIds);
+        }
+      }
+
+      const { data: empData, error: empError } = await empQuery;
       
       if (empError) {
         console.error('ERRO CRÍTICO EMPRESAS:', empError);

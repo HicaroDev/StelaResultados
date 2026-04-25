@@ -8,9 +8,12 @@ export interface Transaction {
   amount: number;
   date: string;
   dueDate?: string;
+  due_date?: string; // Supabase compat
   paymentDate?: string;
+  payment_date?: string; // Supabase compat
   status: TransactionStatus;
   type: TransactionType;
+  empresa_id?: string;
 }
 
 export interface DRELine {

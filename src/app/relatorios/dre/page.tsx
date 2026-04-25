@@ -6,16 +6,30 @@ import { Transaction } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
+import { useAuth } from '@/context/AuthContext';
+import { supabase } from '@/lib/supabase';
+
 export default function DREPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [viewMode, setViewMode] = useState<'value' | 'av'>('value');
   const [isMounted, setIsMounted] = useState(false);
+  const { selectedEmpresaId, user } = useAuth();
 
   useEffect(() => {
     setIsMounted(true);
-    const saved = localStorage.getItem('stela_transactions');
-    if (saved) setTransactions(JSON.parse(saved));
-  }, []);
+    if (user && selectedEmpresaId) {
+      fetchDREData();
+    }
+  }, [user, selectedEmpresaId]);
+
+  const fetchDREData = async () => {
+    const { data } = await supabase
+      .from('transactions')
+      .select('*')
+      .eq('empresa_id', selectedEmpresaId);
+    
+    if (data) setTransactions(data);
+  };
 
   if (!isMounted) return null;
 

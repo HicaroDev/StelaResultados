@@ -14,6 +14,8 @@ import {
 import { supabase } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useAuth } from '@/context/AuthContext';
+import { Edit3 } from 'lucide-react';
 
 interface RegistryItem {
   id: string;
@@ -28,8 +30,10 @@ export default function CadastroPage() {
   const [items, setItems] = useState<RegistryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [name, setName] = useState('');
   const [formData, setFormData] = useState<any>({});
+  const { user, selectedEmpresaId, isAdmin, profile, empresas } = useAuth();
 
   const tabs = [
     { id: 'empresa', label: 'Empresas', icon: Building2 },
@@ -41,48 +45,102 @@ export default function CadastroPage() {
   ];
 
   useEffect(() => {
-    fetchItems();
-  }, []);
+    if (user) fetchItems();
+  }, [activeTab, selectedEmpresaId, user]);
 
   const fetchItems = async () => {
-    const { data, error } = await supabase
+    setLoading(true);
+    let query = supabase
       .from('base_registry')
       .select('*')
-      .order('created_at', { ascending: false });
+      .eq('type', activeTab);
+
+    // Lógica de Isolamento por Matriz Selecionada
+    if (activeTab === 'empresa') {
+      // Na aba de empresas, mostramos todas as que o usuário tem permissão
+      // Se for admin master, vê todas. Se for cliente, vê as dele.
+      if (!isAdmin) {
+        const empresaIds = empresas.map(e => e.id);
+        if (empresaIds.length > 0) {
+          query = query.in('id', empresaIds);
+        }
+      }
+    } else if (selectedEmpresaId) {
+      // Nas outras abas, filtramos rigorosamente pela empresa selecionada no menu
+      query = query.eq('empresa_id', selectedEmpresaId);
+    }
+
+    const { data } = await query.order('created_at', { ascending: false });
 
     if (data) setItems(data);
     setLoading(false);
+  };
+
+  const handleEdit = (item: RegistryItem) => {
+    setEditingId(item.id);
+    setName(item.name);
+    setFormData(item.metadata || {});
+    setShowForm(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    const { error } = await supabase
-      .from('base_registry')
-      .insert([{ 
-        name, 
-        type: activeTab,
-        metadata: formData 
-      }]);
+    const payload = { 
+      name, 
+      type: activeTab,
+      metadata: formData,
+      updated_at: new Date().toISOString(),
+      // Se estiver criando empresa, marca quem criou. 
+      // Se for outro item, vincula à empresa selecionada.
+      ...(editingId ? {} : { 
+        created_by: user?.id,
+        empresa_id: activeTab === 'empresa' ? null : selectedEmpresaId 
+      })
+    };
 
-    if (!error) {
-      setName('');
-      setFormData({});
-      setShowForm(false);
-      fetchItems();
+    if (editingId) {
+      const { error } = await supabase
+        .from('base_registry')
+        .update(payload)
+        .eq('id', editingId);
+      
+      if (error) alert('Erro ao atualizar: ' + error.message);
+    } else {
+      const { error } = await supabase
+        .from('base_registry')
+        .insert([payload]);
+      
+      if (error) alert('Erro ao cadastrar: ' + error.message);
     }
+
+    setName('');
+    setFormData({});
+    setEditingId(null);
+    setShowForm(false);
+    fetchItems();
     setLoading(false);
   };
 
   const handleDelete = async (id: string) => {
-    if (window.confirm('Excluir este cadastro?')) {
+    const isEmpresa = activeTab === 'empresa';
+    const warning = isEmpresa 
+      ? 'ATENÇÃO CRÍTICA: Excluir esta MATRIZ irá apagar permanentemente TODOS os dados (Clientes, Fornecedores, Bancos e Lançamentos) vinculados a ela. Esta ação é irreversível. Deseja prosseguir?'
+      : 'Deseja excluir este registro?';
+
+    if (window.confirm(warning)) {
       const { error } = await supabase
         .from('base_registry')
         .delete()
         .eq('id', id);
       
-      if (!error) fetchItems();
+      if (error) {
+        alert('Erro ao excluir: ' + error.message);
+      } else {
+        fetchItems();
+      }
     }
   };
 
@@ -130,8 +188,10 @@ export default function CadastroPage() {
       {showForm && (
         <Card className="bg-white p-10 rounded-[40px] border-none shadow-[0px_20px_60px_rgba(0,0,0,0.05)] animate-in fade-in slide-in-from-top-4 duration-500 max-w-2xl">
           <div className="flex justify-between items-center mb-8">
-            <h3 className="text-xs font-black text-foreground uppercase tracking-[0.2em]">Novo Registro: {tabs.find(t => t.id === activeTab)?.label}</h3>
-            <button onClick={() => setShowForm(false)} className="p-2 hover:bg-muted rounded-full transition-all"><X size={20} className="text-muted-foreground" /></button>
+            <h3 className="text-xs font-black text-foreground uppercase tracking-[0.2em]">
+              {editingId ? 'Editar' : 'Novo'} Registro: {tabs.find(t => t.id === activeTab)?.label}
+            </h3>
+            <button onClick={() => { setShowForm(false); setEditingId(null); setName(''); setFormData({}); }} className="p-2 hover:bg-muted rounded-full transition-all"><X size={20} className="text-muted-foreground" /></button>
           </div>
           <form onSubmit={handleSave} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -277,9 +337,14 @@ export default function CadastroPage() {
                   )}
                 </div>
               </div>
-              <button onClick={() => handleDelete(item.id)} className="opacity-0 group-hover:opacity-100 p-2.5 text-rose-500 hover:bg-rose-50 rounded-xl transition-all ml-4">
-                <Trash2 size={16}/>
-              </button>
+              <div className="flex items-center gap-2 ml-4">
+                <button onClick={() => handleEdit(item)} className="opacity-0 group-hover:opacity-100 p-2.5 text-primary hover:bg-primary/5 rounded-xl transition-all">
+                  <Edit3 size={16}/>
+                </button>
+                <button onClick={() => handleDelete(item.id)} className="opacity-0 group-hover:opacity-100 p-2.5 text-rose-500 hover:bg-rose-50 rounded-xl transition-all">
+                  <Trash2 size={16}/>
+                </button>
+              </div>
             </div>
           ))}
           {items.filter(i => i.type === activeTab).length === 0 && (

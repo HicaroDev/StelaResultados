@@ -17,7 +17,11 @@ interface AuthContextType {
   session: Session | null;
   user: User | null;
   profile: Profile | null;
+  selectedEmpresaId: string | null;
+  setSelectedEmpresaId: (id: string | null) => void;
+  empresas: any[];
   loading: boolean;
+  isAdmin: boolean;
   signOut: () => Promise<void>;
 }
 
@@ -25,7 +29,11 @@ const AuthContext = createContext<AuthContextType>({
   session: null,
   user: null,
   profile: null,
+  selectedEmpresaId: null,
+  setSelectedEmpresaId: () => {},
+  empresas: [],
   loading: true,
+  isAdmin: false,
   signOut: async () => {},
 });
 
@@ -33,15 +41,36 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [selectedEmpresaId, setSelectedEmpresaId] = useState<string | null>(null);
+  const [empresas, setEmpresas] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  const fetchEmpresas = async (userId: string, isAdmin: boolean) => {
+    let query = supabase
+      .from('base_registry')
+      .select('id, name')
+      .eq('type', 'empresa');
+    
+    // Se não for Admin Master, vê apenas as que criou
+    if (!isAdmin) {
+      query = query.eq('created_by', userId);
+    }
+
+    const { data } = await query;
+    if (data && data.length > 0) {
+      setEmpresas(data);
+      // Seleciona a primeira empresa por padrão se nada estiver selecionado
+      setSelectedEmpresaId(prev => prev || data[0].id);
+    }
+  };
 
   const fetchProfile = async (userId: string, currentSession: Session | null) => {
     // Chave Mestra 2.0: Garante acesso IMEDIATO para o e-mail oficial
     const isMasterEmail = currentSession?.user?.email === 'admin@lemmi.com';
     
     if (isMasterEmail) {
-      setProfile({
+      const masterProfile: Profile = {
         id: userId,
         full_name: 'Administrador Stela',
         role: 'admin',
@@ -54,8 +83,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           relatorios: true,
           usuarios: true
         }
-      });
-      return; // Ignora o banco de dados para o Admin Master
+      };
+      setProfile(masterProfile);
+      return; 
     }
 
     const { data, error } = await supabase
@@ -66,6 +96,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     
     if (data) {
       setProfile(data);
+      // Se for usuário comum, trava na empresa dele
+      if (data.role === 'common' && data.empresa_id) {
+        setSelectedEmpresaId(data.empresa_id);
+      }
     } else {
       const { data: newProfile } = await supabase
         .from('profiles')
@@ -83,6 +117,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(session?.user ?? null);
       if (session?.user) {
         await fetchProfile(session.user.id, session);
+        // Agora buscamos as empresas passando o ID e se é admin
+        const isMaster = session.user.email === 'admin@lemmi.com';
+        await fetchEmpresas(session.user.id, isMaster);
       }
       setLoading(false);
     });
@@ -93,9 +130,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(session?.user ?? null);
       
       if (session?.user) {
+        const isMaster = session.user.email === 'admin@lemmi.com';
         fetchProfile(session.user.id, session);
+        fetchEmpresas(session.user.id, isMaster);
       } else {
         setProfile(null);
+        setSelectedEmpresaId(null);
+        setEmpresas([]);
       }
       
       setLoading(false);
@@ -110,11 +151,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signOut = async () => {
     await supabase.auth.signOut();
     setProfile(null);
+    setSelectedEmpresaId(null);
+    setEmpresas([]);
     router.push('/login');
   };
 
   return (
-    <AuthContext.Provider value={{ session, user, profile, loading, signOut }}>
+    <AuthContext.Provider value={{ 
+      session, 
+      user, 
+      profile, 
+      selectedEmpresaId, 
+      setSelectedEmpresaId, 
+      empresas, 
+      loading, 
+      isAdmin: user?.email === 'admin@lemmi.com' || profile?.role === 'admin',
+      signOut 
+    }}>
       {children}
     </AuthContext.Provider>
   );

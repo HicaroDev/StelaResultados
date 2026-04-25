@@ -18,8 +18,10 @@ import {
   Ban
 } from 'lucide-react';
 import { Transaction, TransactionType, TransactionStatus } from '@/types';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { useAuth } from '@/context/AuthContext';
+import { supabase } from '@/lib/supabase';
 
 // Categorias Oficiais (Serão movidas para o módulo de Cadastro na Fase 1.2)
 const OFFICIAL_CATEGORIES = [
@@ -39,7 +41,9 @@ export default function LancamentosPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
+  const { selectedEmpresaId, user } = useAuth();
 
   // Form states
   const [description, setDescription] = useState('');
@@ -51,16 +55,28 @@ export default function LancamentosPage() {
 
   useEffect(() => {
     setIsMounted(true);
-    const saved = localStorage.getItem('stela_transactions');
-    if (saved) {
-      setTransactions(JSON.parse(saved));
+    if (user && selectedEmpresaId) {
+      fetchTransactions();
     }
-  }, []);
+  }, [user, selectedEmpresaId]);
 
   if (!isMounted) return null;
 
-  const handleSave = (e: React.FormEvent) => {
+  const fetchTransactions = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('transactions')
+      .select('*')
+      .eq('empresa_id', selectedEmpresaId)
+      .order('date', { ascending: false });
+
+    if (data) setTransactions(data);
+    setLoading(false);
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     
     const txData = {
       description,
@@ -68,25 +84,30 @@ export default function LancamentosPage() {
       category,
       type,
       date: new Date().toISOString().split('T')[0],
-      dueDate,
-      status
+      due_date: dueDate || null,
+      status,
+      empresa_id: selectedEmpresaId,
+      created_by: user?.id,
+      updated_at: new Date().toISOString()
     };
 
     if (editingId) {
-      const updated = transactions.map(t => t.id === editingId ? { ...t, ...txData } : t);
-      setTransactions(updated);
-      localStorage.setItem('stela_transactions', JSON.stringify(updated));
+      const { error } = await supabase
+        .from('transactions')
+        .update(txData)
+        .eq('id', editingId);
+      
+      if (error) alert('Erro ao atualizar: ' + error.message);
     } else {
-      const newTx: Transaction = {
-        id: Math.random().toString(36).substr(2, 9),
-        ...txData
-      };
-      const updated = [newTx, ...transactions];
-      setTransactions(updated);
-      localStorage.setItem('stela_transactions', JSON.stringify(updated));
+      const { error } = await supabase
+        .from('transactions')
+        .insert([txData]);
+      
+      if (error) alert('Erro ao cadastrar: ' + error.message);
     }
 
     resetForm();
+    fetchTransactions();
   };
 
   const resetForm = () => {
@@ -106,17 +127,21 @@ export default function LancamentosPage() {
     setAmount(tx.amount.toString());
     setCategory(tx.category);
     setType(tx.type);
-    setDueDate(tx.dueDate || '');
+    setDueDate(tx.dueDate || tx.due_date || '');
     setStatus(tx.status);
     setShowForm(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (window.confirm('Deseja excluir este lançamento?')) {
-      const updated = transactions.filter(t => t.id !== id);
-      setTransactions(updated);
-      localStorage.setItem('stela_transactions', JSON.stringify(updated));
+      const { error } = await supabase
+        .from('transactions')
+        .delete()
+        .eq('id', id);
+      
+      if (error) alert('Erro ao excluir: ' + error.message);
+      else fetchTransactions();
     }
   };
 
@@ -138,7 +163,7 @@ export default function LancamentosPage() {
       <div className="flex justify-between items-end">
         <div>
           <h2 className="text-4xl font-medium tracking-tight text-foreground font-title italic leading-none">Lançamentos</h2>
-          <p className="text-muted-foreground font-black mt-2 uppercase text-[9px] tracking-widest">Módulo 1 • Gestão de Fluxo v1.20</p>
+          <p className="text-muted-foreground font-black mt-2 uppercase text-[9px] tracking-widest">Módulo 1 • Gestão de Fluxo v1.25 (Live DB)</p>
         </div>
         {!showForm && (
           <Button onClick={() => setShowForm(true)} className="bg-primary text-primary-foreground h-11 px-6 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-105 transition-all">
@@ -189,8 +214,8 @@ export default function LancamentosPage() {
               </select>
             </div>
             <div className="md:col-span-3 pt-4">
-              <Button type="submit" className="w-full bg-foreground text-background h-12 rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] hover:scale-[1.01] transition-all">
-                {editingId ? 'Salvar Alterações' : 'Confirmar Lançamento'}
+              <Button type="submit" disabled={loading} className="w-full bg-foreground text-background h-12 rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] hover:scale-[1.01] transition-all">
+                {loading ? 'Sincronizando...' : editingId ? 'Salvar Alterações' : 'Confirmar Lançamento'}
               </Button>
             </div>
           </form>
@@ -210,52 +235,58 @@ export default function LancamentosPage() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="text-[8px] uppercase tracking-[0.2em] text-muted-foreground font-black border-b border-muted/10 bg-muted/5">
-                <th className="px-10 py-5">Status</th>
-                <th className="px-6 py-5">Data / Venc.</th>
-                <th className="px-6 py-5">Descrição</th>
-                <th className="px-6 py-5">Categoria</th>
-                <th className="px-6 py-5 text-right">Valor</th>
-                <th className="px-10 py-5 text-right">Ações</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-muted/10">
-              {transactions.map((tx) => (
-                <tr key={tx.id} className="group hover:bg-muted/5 transition-all">
-                  <td className="px-10 py-5">{getStatusBadge(tx.status)}</td>
-                  <td className="px-6 py-5">
-                    <p className="text-[11px] font-black text-foreground">{tx.date}</p>
-                    <p className="text-[9px] text-muted-foreground font-bold">{tx.dueDate || 'Sem data'}</p>
-                  </td>
-                  <td className="px-6 py-5">
-                    <p className="text-[11px] font-black text-foreground">{tx.description}</p>
-                  </td>
-                  <td className="px-6 py-5">
-                    <span className="px-3 py-1 bg-muted/50 rounded-lg text-[9px] font-black uppercase tracking-widest text-muted-foreground">{tx.category}</span>
-                  </td>
-                  <td className={`px-6 py-5 text-right text-xs font-black ${tx.type === 'income' ? 'text-emerald-600' : 'text-foreground'}`}>
-                    {tx.type === 'income' ? '+' : '-'} {tx.amount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                  </td>
-                  <td className="px-10 py-5 text-right">
-                    <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-all">
-                      <button onClick={() => handleEdit(tx)} className="p-2 text-muted-foreground hover:text-primary-foreground hover:bg-primary/5 rounded-xl transition-all"><Edit3 size={14}/></button>
-                      <button onClick={() => handleDelete(tx.id)} className="p-2 text-muted-foreground hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-all"><Trash2 size={14}/></button>
-                    </div>
-                  </td>
+          {loading ? (
+            <div className="py-20 flex justify-center items-center">
+              <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          ) : (
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="text-[8px] uppercase tracking-[0.2em] text-muted-foreground font-black border-b border-muted/10 bg-muted/5">
+                  <th className="px-10 py-5">Status</th>
+                  <th className="px-6 py-5">Data / Venc.</th>
+                  <th className="px-6 py-5">Descrição</th>
+                  <th className="px-6 py-5">Categoria</th>
+                  <th className="px-6 py-5 text-right">Valor</th>
+                  <th className="px-10 py-5 text-right">Ações</th>
                 </tr>
-              ))}
-              {transactions.length === 0 && (
-                <tr>
-                  <td colSpan={6} className="px-10 py-20 text-center">
-                    <p className="text-xs font-bold text-muted-foreground">Nenhum lançamento encontrado.</p>
-                    <Button variant="ghost" onClick={() => setShowForm(true)} className="mt-4 text-[9px] font-black uppercase tracking-widest">Criar primeiro lançamento</Button>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-muted/10">
+                {transactions.map((tx) => (
+                  <tr key={tx.id} className="group hover:bg-muted/5 transition-all">
+                    <td className="px-10 py-5">{getStatusBadge(tx.status)}</td>
+                    <td className="px-6 py-5">
+                      <p className="text-[11px] font-black text-foreground">{tx.date}</p>
+                      <p className="text-[9px] text-muted-foreground font-bold">{tx.due_date || tx.dueDate || 'Sem data'}</p>
+                    </td>
+                    <td className="px-6 py-5">
+                      <p className="text-[11px] font-black text-foreground">{tx.description}</p>
+                    </td>
+                    <td className="px-6 py-5">
+                      <span className="px-3 py-1 bg-muted/50 rounded-lg text-[9px] font-black uppercase tracking-widest text-muted-foreground">{tx.category}</span>
+                    </td>
+                    <td className={`px-6 py-5 text-right text-xs font-black ${tx.type === 'income' ? 'text-emerald-600' : 'text-foreground'}`}>
+                      {tx.type === 'income' ? '+' : '-'} {tx.amount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                    </td>
+                    <td className="px-10 py-5 text-right">
+                      <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                        <button onClick={() => handleEdit(tx)} className="p-2 text-muted-foreground hover:text-primary-foreground hover:bg-primary/5 rounded-xl transition-all"><Edit3 size={14}/></button>
+                        <button onClick={() => handleDelete(tx.id)} className="p-2 text-muted-foreground hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-all"><Trash2 size={14}/></button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+                {transactions.length === 0 && (
+                  <tr>
+                    <td colSpan={6} className="px-10 py-20 text-center">
+                      <p className="text-xs font-bold text-muted-foreground">Nenhum lançamento encontrado para esta empresa.</p>
+                      <Button variant="ghost" onClick={() => setShowForm(true)} className="mt-4 text-[9px] font-black uppercase tracking-widest">Criar primeiro lançamento</Button>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
         </div>
       </Card>
     </div>

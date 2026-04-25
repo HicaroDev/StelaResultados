@@ -15,13 +15,17 @@ import {
   Users,
   LogOut,
   FolderTree,
-  RefreshCw
+  RefreshCw,
+  ChevronDown,
+  Building2,
+  Globe
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { cn } from '@/lib/utils';
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const { profile, signOut } = useAuth();
+  const { profile, signOut, empresas, selectedEmpresaId, setSelectedEmpresaId } = useAuth();
   const isAdmin = profile?.role === 'admin';
 
   const hasPermission = (module: string) => {
@@ -43,13 +47,45 @@ export default function Sidebar() {
 
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 z-50 bg-white/90 backdrop-blur-2xl border-r border-primary/20 flex flex-col p-6 gap-2 font-sans">
-      <div className="flex items-center gap-3 px-2 py-4 mb-8">
+      <div className="flex items-center gap-3 px-2 py-4 mb-4">
         <div className="w-11 h-11 rounded-[18px] bg-primary flex items-center justify-center text-primary-foreground shadow-xl shadow-primary/20">
           <Wallet size={20} strokeWidth={1.5} />
         </div>
         <div>
           <h1 className="text-3xl font-medium text-foreground tracking-tighter font-title italic leading-none">Stela</h1>
           <p className="text-[7px] uppercase tracking-[0.5em] text-primary-foreground/60 font-black mt-1 uppercase">Intelligence</p>
+        </div>
+      </div>
+
+      {/* Seletor de Contexto de Empresa */}
+      <div className="px-2 mb-8">
+        <div className="p-1 bg-muted/20 rounded-[24px] border border-primary/5">
+          <div className="px-3 py-2">
+            <p className="text-[8px] font-black text-muted-foreground/60 uppercase tracking-[0.2em] mb-2 ml-1">Matriz Ativa</p>
+            {isAdmin ? (
+              <div className="relative group/selector">
+                <select 
+                value={selectedEmpresaId || ''} 
+                onChange={(e) => setSelectedEmpresaId(e.target.value)}
+                className="w-full bg-white border-none rounded-xl px-4 py-3 text-[11px] font-bold text-[#1A1A1A] outline-none shadow-sm cursor-pointer appearance-none"
+              >
+                {empresas.map(emp => (
+                  <option key={emp.id} value={emp.id}>{emp.name}</option>
+                ))}
+              </select>
+                <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-primary pointer-events-none group-hover:translate-y-[-40%] transition-all" />
+              </div>
+            ) : (
+              <div className="flex items-center gap-3 bg-white/50 border border-primary/10 rounded-xl px-4 py-2.5 shadow-sm">
+                <div className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <Building2 size={12} className="text-primary" />
+                </div>
+                <span className="text-[10px] font-black text-foreground uppercase truncate">
+                  {empresas.find(e => e.id === selectedEmpresaId)?.name || 'STELA FINANCE'}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
