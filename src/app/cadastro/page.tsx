@@ -230,6 +230,18 @@ export default function CadastroPage() {
                     <label className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">CNPJ</label>
                     <input value={formData.cnpj || ''} onChange={(e) => setFormData({...formData, cnpj: e.target.value})} className="w-full bg-muted/30 border-none rounded-xl px-5 py-3 text-xs font-bold outline-none" placeholder="00.000.000/0000-00" />
                   </div>
+                  <div className="md:col-span-2 flex items-center gap-3 p-4 bg-primary/5 rounded-2xl border border-primary/10">
+                    <input 
+                      type="checkbox" 
+                      id="is_matriz"
+                      checked={formData.is_matriz || false} 
+                      onChange={(e) => setFormData({...formData, is_matriz: e.target.checked})} 
+                      className="w-5 h-5 rounded-lg border-primary/20 text-primary focus:ring-primary/20"
+                    />
+                    <label htmlFor="is_matriz" className="text-[10px] font-black uppercase text-primary tracking-widest cursor-pointer select-none">
+                      Esta é a Empresa Matriz / Sede do Grupo
+                    </label>
+                  </div>
                 </>
               )}
 
@@ -304,7 +316,12 @@ export default function CadastroPage() {
                    {tabs.find(t => t.id === activeTab)?.icon && React.createElement(tabs.find(t => t.id === activeTab)!.icon, { size: 20 })}
                 </div>
                 <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-8 flex-1">
-                  <span className="text-[11px] font-bold text-foreground min-w-[200px]">{item.name}</span>
+                  <span className="text-[11px] font-bold text-foreground min-w-[200px]">
+                    {item.name}
+                    {activeTab === 'empresa' && item.metadata?.is_matriz && (
+                      <span className="ml-2 bg-primary/20 text-primary text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-widest">Matriz</span>
+                    )}
+                  </span>
                   
                   {item.metadata && (
                     <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
