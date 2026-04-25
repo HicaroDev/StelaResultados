@@ -152,7 +152,7 @@ export default function UsuariosPage() {
     setLoading(true);
 
     try {
-      let empresaId = selectedEmpresaId;
+      let empresaId = selectedEmpresaId || null;
 
       // 2. Se for uma nova empresa, criar primeiro
       if (selectedEmpresaId === 'NEW') {
