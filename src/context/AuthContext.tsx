@@ -155,11 +155,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [router]);
 
   const signOut = async () => {
-    await supabase.auth.signOut();
-    setProfile(null);
-    setSelectedEmpresaId(null);
-    setEmpresas([]);
-    router.push('/login');
+    try {
+      await supabase.auth.signOut();
+    } catch (err) {
+      console.error('Erro ao deslogar do Supabase:', err);
+    } finally {
+      // Limpa estado local de qualquer forma para destravar a UI
+      setProfile(null);
+      setSelectedEmpresaId(null);
+      setEmpresas([]);
+      setSession(null);
+      setUser(null);
+      window.location.href = '/login'; // Força o redirecionamento bruto se o router falhar
+    }
   };
 
   return (

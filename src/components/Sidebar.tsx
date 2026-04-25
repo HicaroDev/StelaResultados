@@ -81,7 +81,7 @@ export default function Sidebar() {
                   <Building2 size={12} className="text-primary" />
                 </div>
                 <span className="text-[10px] font-black text-foreground uppercase truncate">
-                  {empresas.find(e => e.id === selectedEmpresaId)?.name || 'STELA FINANCE'}
+                  {loading ? 'Carregando...' : (empresas.find(e => e.id === selectedEmpresaId)?.name || 'Empresa não encontrada')}
                 </span>
               </div>
             )}
