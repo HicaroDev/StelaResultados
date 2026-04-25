@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Session, User } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
+import { getCompanyAction } from '@/app/actions/empresas';
 
 interface Profile {
   id: string;
@@ -62,10 +63,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const { data } = await query;
-    if (data && data.length > 0) {
-      setEmpresas(data);
-      // Seleciona a primeira empresa por padrão se nada estiver selecionado
-      setSelectedEmpresaId(prev => prev || data[0].id);
+    
+    // Fallback de Segurança: Se não retornou nada mas tem uma empresa vinculada, 
+    // buscamos via Server Action (ignora RLS do cliente)
+    let finalData = data || [];
+    if (!isAdmin && linkedEmpresaId && finalData.length === 0) {
+      const { data: fallbackData } = await getCompanyAction(linkedEmpresaId);
+      if (fallbackData) {
+        finalData = [fallbackData];
+      }
+    }
+
+    setEmpresas(finalData);
+    if (finalData.length > 0) {
+      setSelectedEmpresaId(prev => prev || finalData[0].id);
     }
   };
 
