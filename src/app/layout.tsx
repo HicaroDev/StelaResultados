@@ -6,6 +6,9 @@ import { cn } from "@/lib/utils";
 import { AuthProvider } from '@/context/AuthContext';
 import ClientLayout from "@/components/ClientLayout";
 
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+
 const plusJakarta = Plus_Jakarta_Sans({ 
   subsets: ['latin'], 
   variable: '--font-sans',
