@@ -128,15 +128,35 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    // Unificamos a inicialização para evitar conflitos de lock de token
+    // Verificação inicial robusta para evitar o erro de "Lock"
+    const initAuth = async () => {
+      try {
+        const { data: { user: initialUser } } = await supabase.auth.getUser();
+        if (initialUser) {
+          setUser(initialUser);
+          const p = await fetchProfile(initialUser.id, null);
+          const isMaster = initialUser.email === 'admin@lemmi.com';
+          await fetchEmpresas(initialUser.id, isMaster, p?.empresa_id);
+        }
+      } catch (err) {
+        console.error("Erro na inicialização da auth:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initAuth();
+
+    // Ouvinte para mudanças em tempo real
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setSession(session);
-      setUser(session?.user ?? null);
+      const currentUser = session?.user ?? null;
+      setUser(currentUser);
       
-      if (session?.user) {
-        const isMaster = session.user.email === 'admin@lemmi.com';
-        const p = await fetchProfile(session.user.id, session);
-        await fetchEmpresas(session.user.id, isMaster, p?.empresa_id);
+      if (currentUser) {
+        const isMaster = currentUser.email === 'admin@lemmi.com';
+        const p = await fetchProfile(currentUser.id, session);
+        await fetchEmpresas(currentUser.id, isMaster, p?.empresa_id);
       } else {
         setProfile(null);
         setSelectedEmpresaId(null);
