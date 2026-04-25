@@ -46,15 +46,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  const fetchEmpresas = async (userId: string, isAdmin: boolean) => {
+  const fetchEmpresas = async (userId: string, isAdmin: boolean, linkedEmpresaId?: string | null) => {
     let query = supabase
       .from('base_registry')
       .select('id, name')
       .eq('type', 'empresa');
     
-    // Se não for Admin Master, vê apenas as que criou
+    // Se não for Admin Master, vê apenas as que criou OU a que está vinculada ao perfil
     if (!isAdmin) {
-      query = query.eq('created_by', userId);
+      if (linkedEmpresaId) {
+        query = query.or(`created_by.eq.${userId},id.eq.${linkedEmpresaId}`);
+      } else {
+        query = query.eq('created_by', userId);
+      }
     }
 
     const { data } = await query;
@@ -85,7 +89,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
       };
       setProfile(masterProfile);
-      return; 
+      return masterProfile; 
     }
 
     const { data, error } = await supabase
@@ -100,6 +104,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (data.role === 'common' && data.empresa_id) {
         setSelectedEmpresaId(data.empresa_id);
       }
+      return data;
     } else {
       const { data: newProfile } = await supabase
         .from('profiles')
@@ -107,6 +112,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .select()
         .single();
       if (newProfile) setProfile(newProfile);
+      return newProfile;
     }
   };
 
@@ -116,23 +122,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
-        await fetchProfile(session.user.id, session);
+        const p = await fetchProfile(session.user.id, session);
         // Agora buscamos as empresas passando o ID e se é admin
         const isMaster = session.user.email === 'admin@lemmi.com';
-        await fetchEmpresas(session.user.id, isMaster);
+        await fetchEmpresas(session.user.id, isMaster, p?.empresa_id);
       }
       setLoading(false);
     });
 
     // Ouvir mudanças na autenticação
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
       
       if (session?.user) {
         const isMaster = session.user.email === 'admin@lemmi.com';
-        fetchProfile(session.user.id, session);
-        fetchEmpresas(session.user.id, isMaster);
+        const p = await fetchProfile(session.user.id, session);
+        await fetchEmpresas(session.user.id, isMaster, p?.empresa_id);
       } else {
         setProfile(null);
         setSelectedEmpresaId(null);
