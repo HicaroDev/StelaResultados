@@ -12,14 +12,20 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const { session, loading } = useAuth();
   const router = useRouter();
   const isLoginPage = pathname === '/login';
+  const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
-    if (!loading && !session && !isLoginPage) {
+    setMounted(true);
+  }, []);
+
+  React.useEffect(() => {
+    if (mounted && !loading && !session && !isLoginPage) {
       router.push('/login');
     }
-  }, [session, loading, isLoginPage, router]);
+  }, [session, loading, isLoginPage, router, mounted]);
 
-  if (loading) {
+  // Evita erro de hidratação: no servidor, renderizamos um estado neutro ou o carregamento
+  if (!mounted || loading) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4">
