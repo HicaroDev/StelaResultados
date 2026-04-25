@@ -214,11 +214,11 @@ export default function CadastroPage() {
                 <>
                   <div className="space-y-2">
                     <label className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">Nome Fantasia</label>
-                    <input onChange={(e) => setFormData({...formData, nome_fantasia: e.target.value})} className="w-full bg-muted/30 border-none rounded-xl px-5 py-3 text-xs font-bold outline-none" />
+                    <input value={formData.nome_fantasia || ''} onChange={(e) => setFormData({...formData, nome_fantasia: e.target.value})} className="w-full bg-muted/30 border-none rounded-xl px-5 py-3 text-xs font-bold outline-none" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">CNPJ</label>
-                    <input onChange={(e) => setFormData({...formData, cnpj: e.target.value})} className="w-full bg-muted/30 border-none rounded-xl px-5 py-3 text-xs font-bold outline-none" placeholder="00.000.000/0000-00" />
+                    <input value={formData.cnpj || ''} onChange={(e) => setFormData({...formData, cnpj: e.target.value})} className="w-full bg-muted/30 border-none rounded-xl px-5 py-3 text-xs font-bold outline-none" placeholder="00.000.000/0000-00" />
                   </div>
                 </>
               )}
@@ -228,15 +228,15 @@ export default function CadastroPage() {
                 <>
                   <div className="space-y-2">
                     <label className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">CNPJ / CPF</label>
-                    <input onChange={(e) => setFormData({...formData, documento: e.target.value})} className="w-full bg-muted/30 border-none rounded-xl px-5 py-3 text-xs font-bold outline-none" />
+                    <input value={formData.documento || ''} onChange={(e) => setFormData({...formData, documento: e.target.value})} className="w-full bg-muted/30 border-none rounded-xl px-5 py-3 text-xs font-bold outline-none" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">Telefone</label>
-                    <input onChange={(e) => setFormData({...formData, telefone: e.target.value})} className="w-full bg-muted/30 border-none rounded-xl px-5 py-3 text-xs font-bold outline-none" />
+                    <input value={formData.telefone || ''} onChange={(e) => setFormData({...formData, telefone: e.target.value})} className="w-full bg-muted/30 border-none rounded-xl px-5 py-3 text-xs font-bold outline-none" />
                   </div>
                   <div className="space-y-2 md:col-span-2">
                     <label className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">E-mail Financeiro</label>
-                    <input onChange={(e) => setFormData({...formData, email: e.target.value})} className="w-full bg-muted/30 border-none rounded-xl px-5 py-3 text-xs font-bold outline-none" />
+                    <input value={formData.email || ''} onChange={(e) => setFormData({...formData, email: e.target.value})} className="w-full bg-muted/30 border-none rounded-xl px-5 py-3 text-xs font-bold outline-none" />
                   </div>
                 </>
               )}
@@ -246,15 +246,15 @@ export default function CadastroPage() {
                 <>
                   <div className="space-y-2">
                     <label className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">Agência</label>
-                    <input onChange={(e) => setFormData({...formData, agencia: e.target.value})} className="w-full bg-muted/30 border-none rounded-xl px-5 py-3 text-xs font-bold outline-none" />
+                    <input value={formData.agencia || ''} onChange={(e) => setFormData({...formData, agencia: e.target.value})} className="w-full bg-muted/30 border-none rounded-xl px-5 py-3 text-xs font-bold outline-none" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">N. Conta</label>
-                    <input onChange={(e) => setFormData({...formData, conta: e.target.value})} className="w-full bg-muted/30 border-none rounded-xl px-5 py-3 text-xs font-bold outline-none" />
+                    <input value={formData.conta || ''} onChange={(e) => setFormData({...formData, conta: e.target.value})} className="w-full bg-muted/30 border-none rounded-xl px-5 py-3 text-xs font-bold outline-none" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">Saldo Inicial (R$)</label>
-                    <input type="number" step="0.01" onChange={(e) => setFormData({...formData, saldo_inicial: e.target.value})} className="w-full bg-muted/30 border-none rounded-xl px-5 py-3 text-xs font-bold outline-none" placeholder="0,00" />
+                    <input value={formData.saldo_inicial || ''} type="number" step="0.01" onChange={(e) => setFormData({...formData, saldo_inicial: e.target.value})} className="w-full bg-muted/30 border-none rounded-xl px-5 py-3 text-xs font-bold outline-none" placeholder="0,00" />
                   </div>
                 </>
               )}
@@ -264,14 +264,14 @@ export default function CadastroPage() {
                 <>
                   <div className="space-y-2">
                     <label className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">Classificação</label>
-                    <select onChange={(e) => setFormData({...formData, classificacao: e.target.value})} className="w-full bg-muted/30 border-none rounded-xl px-5 py-3 text-xs font-bold outline-none appearance-none">
+                    <select value={formData.classificacao || 'receita'} onChange={(e) => setFormData({...formData, classificacao: e.target.value})} className="w-full bg-muted/30 border-none rounded-xl px-5 py-3 text-xs font-bold outline-none appearance-none">
                       <option value="receita">Receita</option>
                       <option value="despesa">Despesa</option>
                     </select>
                   </div>
                   <div className="space-y-2">
                     <label className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">Grupo (Ex: Impostos, Salários)</label>
-                    <input onChange={(e) => setFormData({...formData, grupo: e.target.value})} className="w-full bg-muted/30 border-none rounded-xl px-5 py-3 text-xs font-bold outline-none" />
+                    <input value={formData.grupo || ''} onChange={(e) => setFormData({...formData, grupo: e.target.value})} className="w-full bg-muted/30 border-none rounded-xl px-5 py-3 text-xs font-bold outline-none" />
                   </div>
                 </>
               )}
