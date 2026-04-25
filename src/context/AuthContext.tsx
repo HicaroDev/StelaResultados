@@ -128,20 +128,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    // Pegar sessão inicial
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        const p = await fetchProfile(session.user.id, session);
-        // Agora buscamos as empresas passando o ID e se é admin
-        const isMaster = session.user.email === 'admin@lemmi.com';
-        await fetchEmpresas(session.user.id, isMaster, p?.empresa_id);
-      }
-      setLoading(false);
-    });
-
-    // Ouvir mudanças na autenticação
+    // Unificamos a inicialização para evitar conflitos de lock de token
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
