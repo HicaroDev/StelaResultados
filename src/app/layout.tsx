@@ -32,9 +32,11 @@ export default function RootLayout({
     <html lang="pt-BR" className={cn("font-sans", plusJakarta.variable, cormorant.variable)} suppressHydrationWarning>
       <body className={`${plusJakarta.className} bg-[#f8f9fa] text-[#1a1a1a] antialiased`}>
         <AuthProvider>
-          <ClientLayout>
-            {children}
-          </ClientLayout>
+          <React.Suspense fallback={null}>
+            <ClientLayout>
+              {children}
+            </ClientLayout>
+          </React.Suspense>
         </AuthProvider>
       </body>
     </html>
