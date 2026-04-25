@@ -25,7 +25,7 @@ import { cn } from '@/lib/utils';
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const { profile, signOut, empresas, selectedEmpresaId, setSelectedEmpresaId } = useAuth();
+  const { profile, signOut, empresas, selectedEmpresaId, setSelectedEmpresaId, loading } = useAuth();
   const isAdmin = profile?.role === 'admin';
 
   const hasPermission = (module: string) => {
