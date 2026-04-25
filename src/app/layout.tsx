@@ -1,3 +1,4 @@
+import React, { Suspense } from "react";
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
@@ -32,11 +33,11 @@ export default function RootLayout({
     <html lang="pt-BR" className={cn("font-sans", plusJakarta.variable, cormorant.variable)} suppressHydrationWarning>
       <body className={`${plusJakarta.className} bg-[#f8f9fa] text-[#1a1a1a] antialiased`}>
         <AuthProvider>
-          <React.Suspense fallback={null}>
+          <Suspense fallback={null}>
             <ClientLayout>
               {children}
             </ClientLayout>
-          </React.Suspense>
+          </Suspense>
         </AuthProvider>
       </body>
     </html>
