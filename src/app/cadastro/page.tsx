@@ -72,7 +72,17 @@ export default function CadastroPage() {
 
     const { data } = await query.order('created_at', { ascending: false });
 
-    if (data) setItems(data);
+    // Se a busca retornar dados, usamos eles. 
+    // Caso contrário, se estivermos na aba de empresas e formos um usuário comum, 
+    // usamos a empresa que o AuthContext já buscou via Server Action (Plano B).
+    if (data && data.length > 0) {
+      setItems(data);
+    } else if (activeTab === 'empresa' && !isAdmin && empresas.length > 0) {
+      setItems(empresas);
+    } else {
+      setItems([]);
+    }
+    
     setLoading(false);
   };
 

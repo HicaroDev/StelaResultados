@@ -6,7 +6,7 @@ export async function getCompanyAction(companyId: string) {
   try {
     const { data, error } = await supabaseAdmin
       .from('base_registry')
-      .select('id, name')
+      .select('*')
       .eq('id', companyId)
       .single();
 
